@@ -1,4 +1,4 @@
-package pl.kamil.praca.model;
+package pl.kamil.praca.diet.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,8 +17,6 @@ public class FoodItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
     private String name;
     private Double calories;
     private Double protein;

@@ -1,8 +1,11 @@
-package pl.kamil.praca.model;
+package pl.kamil.praca.authentication.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import pl.kamil.praca.diet.model.Meal;
+import pl.kamil.praca.diet.model.UserProgress;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String username;
     @Email
     private String email;
     private String password;
@@ -40,4 +44,10 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserProgress> progressList;
 
+
+
+
+    public Collection<GrantedAuthority> roleToAuthrity() {
+        return null;
+    }
 }

@@ -1,9 +1,7 @@
-package pl.kamil.praca.model;
+package pl.kamil.praca.diet.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor
@@ -11,12 +9,14 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Data
-public class UserProgress {
+public class Meal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   private LocalDate date;
+    @Enumerated(EnumType.STRING)
+    private MealType type;
 
-    private Double newWeight;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private FoodItem foodItem;
 }

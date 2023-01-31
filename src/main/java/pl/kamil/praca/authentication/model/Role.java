@@ -1,4 +1,4 @@
-package pl.kamil.praca.model;
+package pl.kamil.praca.authentication.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
