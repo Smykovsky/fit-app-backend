@@ -8,6 +8,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.security.Security;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,38 +24,30 @@ import pl.kamil.praca.authentication.model.Token;
 import pl.kamil.praca.authentication.repository.TokenRepository;
 import pl.kamil.praca.authentication.service.UserService;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Component
 @Slf4j
-public class JWTFilter extends OncePerRequestFilter implements Filter {
+public class JwtAuthFilter extends OncePerRequestFilter {
+
     private final UserService userService;
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     private final TokenRepository tokenRepository;
 
-    public JWTFilter(UserService userService, JWTUtil jwtUtil, TokenRepository tokenRepository) {
+    public JwtAuthFilter(UserService userService, JwtUtil jwtUtil, TokenRepository tokenRepository) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
         this.tokenRepository = tokenRepository;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String authHeader = request.getHeader(AUTHORIZATION);
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        final String authorizationHeader = request.getHeader(AUTHORIZATION);
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
-                String token = authHeader.substring("Bearer ".length());
+                String token = authorizationHeader.substring("Bearer ".length());
                 DecodedJWT decodedJWT = jwtUtil.validToken(token);
                 String username = decodedJWT.getSubject();
 
@@ -58,36 +56,29 @@ public class JWTFilter extends OncePerRequestFilter implements Filter {
                     UserDetails userDetails = userService.getUserDetails(username);
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    filterChain.doFilter(request, response);
+                    chain.doFilter(request, response);
                 } else {
-                    log.info("Error, invalid token");
-                    response.setHeader("error", "Invalid token");
+                    log.info("Error logging in: Invalid token");
+                    response.setHeader("error", "Invalid token!");
                     response.setStatus(FORBIDDEN.value());
-                    Map<String, String> errorMap = new HashMap<>();
-                    errorMap.put("Error_message", "Invalid token");
+                    Map<String, String> error = new HashMap<>();
+                    error.put("error_message", "Invalid Token");
                     response.setContentType(APPLICATION_JSON_VALUE);
-                    new ObjectMapper().writeValue(response.getOutputStream(), errorMap);
+                    new ObjectMapper().writeValue(response.getOutputStream(), error);
                     this.tokenRepository.deleteTokenByToken(token);
                 }
-            } catch(Exception e) {
-                 log.info("Error", e.getMessage());
-                 response.setHeader("error", e.getMessage());
-                 response.setStatus(FORBIDDEN.value());
-                 Map<String, String> errorMap = new HashMap<>();
-                 errorMap.put("error_message", e.getMessage());
-                 response.setContentType(APPLICATION_JSON_VALUE);
-                 new ObjectMapper().writeValue(response.getOutputStream(), errorMap );
+
+            } catch (Exception exception) {
+                log.info("Error logging in: {}", exception.getMessage());
+                response.setHeader("error", exception.getMessage());
+                response.setStatus(FORBIDDEN.value());
+                Map<String, String> error = new HashMap<>();
+                error.put("error_message", exception.getMessage());
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
         } else {
-                filterChain.doFilter(request, response);
+            chain.doFilter(request, response);
         }
-    }
-
-    public void init(FilterConfig filterConfig) throws javax.servlet.ServletException {
-
-    }
-
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, javax.servlet.FilterChain filterChain) throws IOException, javax.servlet.ServletException {
-
     }
 }

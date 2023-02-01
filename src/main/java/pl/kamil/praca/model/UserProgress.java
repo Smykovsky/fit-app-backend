@@ -1,4 +1,4 @@
-package pl.kamil.praca.diet.model;
+package pl.kamil.praca.model;
 
 import jakarta.persistence.*;
 import lombok.*;

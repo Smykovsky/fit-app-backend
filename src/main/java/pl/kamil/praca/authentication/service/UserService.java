@@ -12,6 +12,7 @@ import pl.kamil.praca.authentication.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -39,8 +40,16 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 
-    private User getUser(String username) {
+    public User getUser(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public User getUser(String username, String email) {
+        return userRepository.findByUsernameOrEmail(username, email);
+    }
+
+    public List<User> getUsers(){
+        return userRepository.findAll();
     }
 
     public UserDetails getUserDetails(String username) {
@@ -48,8 +57,24 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             return null;
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.roleToAuthrity());
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.roleToAuthority());
     }
+
+    public UserDetails getUserDetails(User user) {
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.roleToAuthority());
+
+    }
+
+    public boolean existsByUsernameOrEmail(final String email, final String username) {
+        return this.userRepository.existsByUsernameOrEmail(email,username);
+    }
+
+    public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+
 
 
 }
