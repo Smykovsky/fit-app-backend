@@ -124,4 +124,22 @@ public class AuthController {
         responseMap.put("user", user);
         return ResponseEntity.ok().body(responseMap);
     }
+
+    @PostMapping("/logout")
+    @Transactional
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String header) {
+
+        final String token = header.substring(7);
+        String username = jwtUtil.getUsernameFromToken(token);
+        final User user = userService.getUser(username);
+
+        Map<String, Object> responseMap = new HashMap<>();
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        responseMap.put("error", false);
+        responseMap.put("message", "Wylogowano!");
+        return ResponseEntity.ok().body(responseMap);
+    }
 }
