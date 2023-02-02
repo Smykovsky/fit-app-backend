@@ -47,10 +47,10 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Meal> meals; // meals list -> breakfast, second_breakfast, lunch, dinner
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY)
     private List<UserProgress> progressList; // user's progress list
 
     public Collection<GrantedAuthority> roleToAuthority() {

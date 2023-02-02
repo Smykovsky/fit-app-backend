@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.praca.authentication.dto.AuthResponse;
 import pl.kamil.praca.authentication.dto.LoginRequest;
+import pl.kamil.praca.authentication.dto.RefreshTokenRequest;
 import pl.kamil.praca.authentication.dto.RegisterRequest;
 import pl.kamil.praca.authentication.model.RefreshToken;
 import pl.kamil.praca.authentication.model.Token;
@@ -143,5 +144,29 @@ public class AuthController {
         responseMap.put("error", false);
         responseMap.put("message", "Wylogowano!");
         return ResponseEntity.ok().body(responseMap);
+    }
+
+    @PostMapping("/refresh")
+    @Transactional
+    public ResponseEntity<?> refresh(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+        Map<String, Object> responseMap = new HashMap<>();
+        String requestRefreshToken = refreshTokenRequest.getRefreshToken();
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUsername)
+                .map(username -> {
+                    final var user = this.userService.getUserDetails(username);
+                    final String token = jwtUtil.buildJwt(user);
+                    this.tokenRepository.save(new Token(null, token, username));
+                    responseMap.put("error", false);
+                    responseMap.put("access_token", token   );
+                    responseMap.put("refresh_token", requestRefreshToken);
+                    return ResponseEntity.ok(responseMap);
+                })
+                .orElseGet(() -> {
+                    responseMap.put("error", true);
+                    responseMap.put("message", "RefreshToken wygasł lub nie istnieje!");
+                    return ResponseEntity.status(500).body(responseMap);
+                });
     }
 }

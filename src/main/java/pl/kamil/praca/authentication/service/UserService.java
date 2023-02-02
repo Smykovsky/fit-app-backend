@@ -74,7 +74,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-
-
-
+    public Double calculateCalorie(User user) {
+        return 66 + (13.7 * user.getWeight()) + (5 * user.getHeight()) - (6 * user.getAge());
+    }
 }
