@@ -22,6 +22,7 @@ import pl.kamil.praca.authentication.service.RefreshTokenService;
 import pl.kamil.praca.authentication.service.UserService;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class AuthController {
     private final UserService userService;
     private final TokenRepository tokenRepository;
     private final RefreshTokenService refreshTokenService;
-    private final AuthenticationManager authenticationManager;
+//    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
 
@@ -55,6 +56,7 @@ public class AuthController {
             user.setEmail(registerRequest.getEmail());
             user.setUsername(registerRequest.getUsername());
             user.setPassword(registerRequest.getPassword());
+            user.setJoinedDate(LocalDateTime.now());
             userService.saveUser(user);
             responseMap.put("error", false);
             responseMap.put("username", registerRequest.getUsername());

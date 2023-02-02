@@ -5,9 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pl.kamil.praca.model.FoodItem;
-import pl.kamil.praca.model.Meal;
-import pl.kamil.praca.model.UserProgress;
+import pl.kamil.praca.diet.model.Meal;
+import pl.kamil.praca.diet.model.UserProgress;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

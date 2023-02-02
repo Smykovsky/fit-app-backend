@@ -1,8 +1,7 @@
-package pl.kamil.praca.model;
+package pl.kamil.praca.diet.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pl.kamil.praca.authentication.model.User;
 
 import java.util.List;
 
