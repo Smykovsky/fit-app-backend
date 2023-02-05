@@ -9,10 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PersonalizeRequest {
-    @Nullable
     private int age;
-    @Nullable
     private Double weight;
-    @Nullable
     private Double height;
+    private String gender;
+    @Nullable
+    private String goal;
 }

@@ -25,6 +25,8 @@ public class UserController {
     @PostMapping("/personalize")
     public ResponseEntity<?> personalizeUser(@RequestBody @Valid PersonalizeRequest personalizeRequest, Authentication authentication) {
         Map<String, Object> responseMap = new HashMap<>();
+        final String MAN = "Mężczyzna";
+        final String WOMEN = "Kobieta";
 
         if (authentication == null || !authentication.isAuthenticated()) {
             responseMap.put("error", true);
@@ -36,18 +38,22 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
+            user.setAge(personalizeRequest.getAge());
+            user.setWeight(personalizeRequest.getWeight());
+            user.setHeight(personalizeRequest.getHeight());
+            user.setGender(personalizeRequest.getGender());
+            user.setGoal(personalizeRequest.getGoal());
 
-        user.setAge(personalizeRequest.getAge());
-        user.setWeight(personalizeRequest.getWeight());
-        user.setHeight(personalizeRequest.getHeight());
-        user.setCalorieIntakeGoal(userService.calculateCalorie(user));
-        userService.saveUser(user);
-
+            if (personalizeRequest.getGender().equals(MAN)) {
+                user.setCalorieIntakeGoal(userService.calculateCaloriesMan(user));
+                userService.saveUser(user);
+            } else
+                user.setCalorieIntakeGoal(userService.calculateCaloriesWomen(user));
+                userService.saveUser(user);
 
         responseMap.put("error", false);
         responseMap.put("user", user);
         responseMap.put("message", "Pomyślnie spersonalizowano użytkownika :)");
-
         return ResponseEntity.ok(responseMap);
     }
 }

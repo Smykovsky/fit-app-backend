@@ -74,7 +74,25 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public Double calculateCalorie(User user) {
-        return 66 + (13.7 * user.getWeight()) + (5 * user.getHeight()) - (6 * user.getAge());
+    public Double calculateCaloriesMan(User user) {
+        double caloriesGoal = 66 + (13.7 * user.getWeight()) + (5 * user.getHeight()) - (6 * user.getAge());
+
+        if (user.getGoal().equals("Schudnąć")) {
+            return caloriesGoal - 300;
+        } else if (user.getGoal().equals("Zbudować masę")) {
+            return caloriesGoal + 300;
+        } else return caloriesGoal;
     }
+
+    public Double calculateCaloriesWomen(User user) {
+        double caloriesGoal = 655 + (9.6 * user.getWeight()) + (1.8 * user.getHeight()) - (4.7 * user.getAge());
+
+        if (user.getGoal().equals("Schudnąć")) {
+            return caloriesGoal - 300;
+        } else if (user.getGoal().equals("Zbudować masę")) {
+            return caloriesGoal + 300;
+        } else return caloriesGoal;
+
+    }
+
 }
