@@ -17,21 +17,14 @@ public class Meal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "meal")
-    private List<FoodItem> foodItems;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private FoodItem foodItems;
+
+    public Meal(String name, FoodItem foodItem) {
+        this.name = name;
+        this.foodItems = foodItem;
+    }
 
 
-    //food items methods
-    public void addFoodItems(FoodItem foodItem) {
-        this.foodItems.add(foodItem);
-    }
-    public void removeFoodItems(FoodItem foodItem) {
-        this.foodItems.remove(foodItem);
-    }
-    public void removeFoodItems(Long id) {
-        this.foodItems.removeIf(foodItem -> foodItem.getId().equals(id));
-    }
-    public FoodItem getFoodItems(Long id) {
-        return this.foodItems.stream().filter(foodItem -> foodItem.getId().equals(id)).findFirst().orElse(null);
-    }
+
 }

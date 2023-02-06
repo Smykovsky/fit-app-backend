@@ -2,6 +2,8 @@ package pl.kamil.praca.diet.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.kamil.praca.diet.dto.FoodItemRequest;
+import pl.kamil.praca.diet.dto.MealRequest;
 
 
 @Entity
@@ -20,9 +22,13 @@ public class FoodItem {
     private Double protein;
     private Double carbohydrates;
     private Double fat;
-    @ManyToOne
-    @JoinColumn(name = "meal_id")
-    private Meal meal;
 
-
+    public FoodItem(FoodItemRequest foodItemDto) {
+        this.id = null;
+        this.name = foodItemDto.getName();
+        this.calories = foodItemDto.getCalories();
+        this.protein = foodItemDto.getProtein();
+        this.carbohydrates = foodItemDto.getCarbohydrates();
+        this.fat = foodItemDto.getFat();
+    }
 }

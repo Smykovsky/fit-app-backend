@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import pl.kamil.praca.diet.model.FoodItem;
 import pl.kamil.praca.diet.model.Meal;
 import pl.kamil.praca.diet.model.UserProgress;
 
@@ -47,10 +48,13 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Meal> meals; // meals list -> breakfast, second_breakfast, lunch, dinner
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<FoodItem> foodItems; //meals items
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<UserProgress> progressList; // user's progress list
 
     public Collection<GrantedAuthority> roleToAuthority() {
@@ -60,13 +64,13 @@ public class User {
     }
 
     //meals methods
-    public void addMeals(Meal meal) {
+    public void addMeal(Meal meal) {
         this.meals.add(meal);
     }
-    public void removeMeals(Meal meal) {
+    public void removeMeal(Meal meal) {
         this.meals.remove(meal);
     }
-    public void removeMeals(Long id) {
+    public void removeMeal(Long id) {
         this.meals.removeIf(meal -> meal.getId().equals(id));
     }
     public Meal getMeal(Long id) {
@@ -85,6 +89,20 @@ public class User {
     }
     public UserProgress getUserProgress() {
         return this.progressList.stream().filter(progress -> progress.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    //food items methods
+    public void addFoodItems(FoodItem foodItem) {
+        this.foodItems.add(foodItem);
+    }
+    public void removeFoodItems(FoodItem foodItem) {
+        this.foodItems.remove(foodItem);
+    }
+    public void removeFoodItems(Long id) {
+        this.foodItems.removeIf(foodItem -> foodItem.getId().equals(id));
+    }
+    public FoodItem getFoodItems(Long id) {
+        return this.foodItems.stream().filter(foodItem -> foodItem.getId().equals(id)).findFirst().orElse(null);
     }
 
 
