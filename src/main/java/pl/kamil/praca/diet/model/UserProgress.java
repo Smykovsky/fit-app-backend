@@ -2,6 +2,7 @@ package pl.kamil.praca.diet.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.kamil.praca.diet.dto.UserProgressRequest;
 
 import java.time.LocalDate;
 
@@ -19,4 +20,9 @@ public class UserProgress {
    private LocalDate date;
 
     private Double newWeight;
+
+    public UserProgress(UserProgressRequest userProgressRequest) {
+        this.date = LocalDate.now();
+        this.newWeight = userProgressRequest.getNewWeight();
+    }
 }

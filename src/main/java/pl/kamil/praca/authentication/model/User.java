@@ -86,7 +86,7 @@ public class User {
     public void removeUserProgress(Long id) {
         this.progressList.removeIf(progress -> progress.getId().equals(id));
     }
-    public UserProgress getUserProgress() {
+    public UserProgress getUserProgress(Long id) {
         return this.progressList.stream().filter(progress -> progress.getId().equals(id)).findFirst().orElse(null);
     }
 
