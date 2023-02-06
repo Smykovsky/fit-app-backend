@@ -25,7 +25,7 @@ public class UserProgressController {
     private final UserService userService;
 
     @PostMapping("/add")
-    ResponseEntity<?>addUserProgress(Authentication authentication, @RequestBody @Valid UserProgressRequest userProgressRequest) {
+    public ResponseEntity<?>addUserProgress(Authentication authentication, @RequestBody @Valid UserProgressRequest userProgressRequest) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }

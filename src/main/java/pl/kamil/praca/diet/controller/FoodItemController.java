@@ -2,7 +2,7 @@ package pl.kamil.praca.diet.controller;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +12,20 @@ import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.service.UserService;
 import pl.kamil.praca.diet.dto.FoodItemRequest;
 import pl.kamil.praca.diet.model.FoodItem;
+import pl.kamil.praca.diet.model.Meal;
 import pl.kamil.praca.diet.service.FoodItemService;
+import pl.kamil.praca.diet.service.MealService;
 
 import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/foodItems")
+@Slf4j
+@RequestMapping("/api/item")
 public class FoodItemController {
     private final FoodItemService foodItemService;
     private final UserService userService;
+    private final MealService mealService;
 
     @PostMapping("/add")
     @Transactional
@@ -33,12 +37,13 @@ public class FoodItemController {
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
+
         this.foodItemService.addFoodItem(new FoodItem(foodItemRequest), user);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/get/{id}")
-    ResponseEntity<?>getFoodItem(Authentication authentication, @PathVariable @Valid Long id) {
+    public ResponseEntity<?>getFoodItem(Authentication authentication, @PathVariable @Valid Long id) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -56,7 +61,7 @@ public class FoodItemController {
     }
 
     @GetMapping("/get")
-    ResponseEntity<?>GetFoodItems(Authentication authentication) {
+    public ResponseEntity<?>GetFoodItems(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -70,7 +75,7 @@ public class FoodItemController {
 
     @PostMapping("/update")
     @Transactional
-    ResponseEntity<?>update(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
+    public ResponseEntity<?>update(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -96,7 +101,7 @@ public class FoodItemController {
 
     @PostMapping("/delete")
     @Transactional
-    ResponseEntity<?> delete(Authentication authentication, @RequestBody String json) throws JSONException {
+    public ResponseEntity<?> delete(Authentication authentication, @RequestBody String json) throws JSONException {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }

@@ -35,7 +35,7 @@ public class MealController {
     }
 
     @GetMapping("/get")
-    ResponseEntity<?>getMeals(Authentication authentication) {
+    public ResponseEntity<?>getMeals(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }

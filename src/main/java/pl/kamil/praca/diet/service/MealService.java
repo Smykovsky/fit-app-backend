@@ -36,9 +36,9 @@ public class MealService {
         }
 
         final FoodItem foodItems = user.getFoodItems(mealRequest.getFoodItemId());
-        if (foodItems == null) {
-            return ResponseEntity.notFound().build();
-        }
+//        if (foodItems == null) {
+//            return ResponseEntity.notFound().build();
+//        }
 
         final Meal meal = new Meal(mealRequest.getName(), foodItems);
         this.mealRepository.save(meal);
@@ -64,7 +64,7 @@ public class MealService {
             return ResponseEntity.notFound().build();
         }
 
-        final Meal newMeal = new Meal(mealRequest.getId(), mealRequest.getName(), foodItems );
+        final Meal newMeal = new Meal(mealRequest.getName(), foodItems);
         this.mealRepository.save(newMeal);
         user.removeMeal(mealRequest.getId());
         user.addMeal(newMeal);
