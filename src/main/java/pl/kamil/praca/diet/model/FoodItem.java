@@ -20,7 +20,6 @@ public class FoodItem {
     private Double protein;
     private Double carbohydrates;
     private Double fat;
-
     @ManyToOne
     @JoinColumn(name = "meal_id")
     private Meal meal;
