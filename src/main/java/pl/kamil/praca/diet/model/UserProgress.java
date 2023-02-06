@@ -8,9 +8,9 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 @Data
+@Table(name = "user_progress")
 public class UserProgress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

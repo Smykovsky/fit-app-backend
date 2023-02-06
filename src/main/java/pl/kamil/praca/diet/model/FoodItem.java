@@ -9,8 +9,7 @@ import pl.kamil.praca.diet.dto.MealRequest;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 @Data
 @Table(name = "food_items")
 public class FoodItem {
