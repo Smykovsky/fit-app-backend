@@ -2,7 +2,6 @@ package pl.kamil.praca.diet.dto;
 
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;

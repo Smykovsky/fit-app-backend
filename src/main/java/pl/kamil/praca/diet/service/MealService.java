@@ -16,7 +16,6 @@ import pl.kamil.praca.diet.repository.FoodItemRepository;
 import pl.kamil.praca.diet.repository.MealRepository;
 import pl.kamil.praca.diet.view.MealViewModel;
 
-import java.util.List;
 
 @Service
 @Slf4j

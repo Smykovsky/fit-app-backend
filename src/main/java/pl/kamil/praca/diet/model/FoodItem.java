@@ -3,7 +3,6 @@ package pl.kamil.praca.diet.model;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.kamil.praca.diet.dto.FoodItemRequest;
-import pl.kamil.praca.diet.dto.MealRequest;
 
 
 @Entity

@@ -1,11 +1,9 @@
 package pl.kamil.praca.diet.dto;
 
 import jakarta.annotation.Nullable;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Data
 @Getter
 @Setter
 public class PersonalizeRequest {

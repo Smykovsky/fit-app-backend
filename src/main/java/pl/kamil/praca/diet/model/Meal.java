@@ -3,7 +3,6 @@ package pl.kamil.praca.diet.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
