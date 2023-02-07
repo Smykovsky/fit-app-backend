@@ -111,10 +111,15 @@ public class FoodItemController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/meal/{mealId}/delete/{itemId}")
     @Transactional
-    public ResponseEntity<?>deleteById(@PathVariable Long id) {
-        this.foodItemService.delete (id);
+    public ResponseEntity<?>deleteById(@PathVariable Long mealId, @PathVariable Long itemId) {
+        this.foodItemService.delete(mealId, itemId);
         return ResponseEntity.noContent().build();
     }
+
+//    @DeleteMapping("/meal/foodItem/{id}")
+//    public void foodItemById(@PathVariable Long id) {
+//        foodItemService.delete(id);
+//    }
 }
