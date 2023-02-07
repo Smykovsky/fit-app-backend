@@ -2,6 +2,7 @@ package pl.kamil.praca.diet.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.service.UserService;
@@ -45,6 +46,7 @@ public class FoodItemService {
     public void delete(Long id) {
         this.foodItemRepository.deleteById(id);
     }
+
     public void delete(FoodItem foodItem) {
         this.foodItemRepository.delete(foodItem);
     }

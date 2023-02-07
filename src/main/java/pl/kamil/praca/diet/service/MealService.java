@@ -35,11 +35,6 @@ public class MealService {
             return ResponseEntity.notFound().build();
         }
 
-//        final FoodItem foodItems = user.getFoodItems(mealRequest.getFoodItemId());
-//        if (foodItems == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-
         final Meal meal = new Meal(mealRequest.getName());
         this.mealRepository.save(meal);
 
@@ -53,11 +48,6 @@ public class MealService {
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-
-//        final FoodItem foodItems = user.getFoodItems(mealRequest.getFoodItemId());
-//        if (foodItems == null) {
-//            return ResponseEntity.notFound().build();
-//        }
 
         final Meal oldMeal = mealRepository.findById(mealRequest.getId()).orElse(null);
         if (oldMeal == null) {
@@ -107,9 +97,24 @@ public class MealService {
         if (mealToRemove == null) {
             return ResponseEntity.notFound().build();
         }
-
         user.removeMeal(mealToRemove);
         userService.saveUser(user);
+        return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity<?>deleteItemById(Authentication authentication, Long mealId, Long itemId) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+        }
+
+        final User user = this.userService.getUser(authentication.getName());
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        final Meal meal = this.mealRepository.findById(mealId).orElse(null);
+        meal.removeFoodItems(itemId);
+        foodItemRepository.deleteById(itemId);
+        mealRepository.save(meal);
         return ResponseEntity.noContent().build();
     }
 }

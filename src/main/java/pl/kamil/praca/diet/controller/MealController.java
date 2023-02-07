@@ -64,4 +64,11 @@ public class MealController {
         return this.mealService.deleteMeal(json, authentication);
     }
 
+    @PostMapping("/{mealId}/delete/item/{itemId}")
+    @Transactional
+    public ResponseEntity<?>deleteItemById(Authentication authentication, @PathVariable Long mealId, @PathVariable Long itemId) {
+        this.mealService.deleteItemById(authentication, mealId, itemId);
+        return ResponseEntity.noContent().build();
+
+    }
 }

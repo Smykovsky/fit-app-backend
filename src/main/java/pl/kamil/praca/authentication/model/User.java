@@ -50,9 +50,6 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Meal> meals; // meals list -> breakfast, second_breakfast, lunch, dinner
 
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private List<FoodItem> foodItems; //meals items
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserProgress> progressList; // user's progress list
 
