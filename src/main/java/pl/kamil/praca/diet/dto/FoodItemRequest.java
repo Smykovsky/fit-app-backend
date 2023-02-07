@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 public class FoodItemRequest {
     @Nullable
     private Long id;
+    @Nullable
     private Long mealId;
     @NotBlank
     private String name;

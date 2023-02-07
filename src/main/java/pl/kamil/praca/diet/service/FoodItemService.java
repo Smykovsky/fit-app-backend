@@ -34,6 +34,9 @@ public class FoodItemService {
     public List<FoodItem> getAll() {
         return this.foodItemRepository.findAll();
     }
+    public FoodItem get(Long id) {
+        return this.foodItemRepository.findById(id).orElse(null);
+    }
 
     public List<FoodItem> getAll(PageRequest pageRequest) {
         return this.foodItemRepository.findAllBy(pageRequest);
@@ -41,5 +44,8 @@ public class FoodItemService {
 
     public void delete(Long id) {
         this.foodItemRepository.deleteById(id);
+    }
+    public void delete(FoodItem foodItem) {
+        this.foodItemRepository.delete(foodItem);
     }
 }

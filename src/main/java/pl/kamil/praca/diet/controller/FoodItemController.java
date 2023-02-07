@@ -47,84 +47,75 @@ public class FoodItemController {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping("/get/{id}")
-//    public ResponseEntity<?>getFoodItem(Authentication authentication, @PathVariable @Valid Long id) {
-//        if (authentication == null || !authentication.isAuthenticated()) {
-//            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
-//        }
-//        final User user = this.userService.getUser(authentication.getName());
-//        if (user == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        List<Meal> meals = user.getMeals();
-//
-//        final FoodItem foodItem = user.getFoodItems(id);
-//        if (foodItem == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        return ResponseEntity.ok(foodItem);
-//    }
-//
-//    @GetMapping("/get")
-//    public ResponseEntity<?>GetFoodItems(Authentication authentication) {
-//        if (authentication == null || !authentication.isAuthenticated()) {
-//            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
-//        }
-//        final User user = this.userService.getUser(authentication.getName());
-//        if (user == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        return ResponseEntity.ok(user.getFoodItems());
-//    }
+    @GetMapping("/get/{id}")
+    public ResponseEntity<?>getFoodItem(Authentication authentication, @PathVariable @Valid Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+        }
+        final FoodItem foodItem = foodItemService.get(id);
+        if (foodItem == null) {
+            return ResponseEntity.notFound().build();
+        }
 
-//    @PostMapping("/update")
-//    @Transactional
-//    public ResponseEntity<?>update(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
-//        if (authentication == null || !authentication.isAuthenticated()) {
-//            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
-//        }
-//        final User user = this.userService.getUser(authentication.getName());
-//        if (user == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        final FoodItem foodItemToSave = user.getFoodItems(foodItemRequest.getId());
-//        if (foodItemToSave == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        foodItemToSave.setName(foodItemRequest.getName());
-//        foodItemToSave.setCalories(foodItemRequest.getCalories());
-//        foodItemToSave.setFat(foodItemRequest.getProtein());
-//        foodItemToSave.setCarbohydrates(foodItemRequest.getCarbohydrates());
-//        foodItemToSave.setFat(foodItemRequest.getFat());
-//        this.foodItemService.save(foodItemToSave);
-//
-//        return ResponseEntity.noContent().bu`ild();
-//    }
+        return ResponseEntity.ok(foodItem);
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<?>GetFoodItems(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+        }
+
+        List<FoodItem> foodItemList = this.foodItemService.getAll();
+        return ResponseEntity.ok(foodItemList);
 
 
-//    @PostMapping("/delete")
-//    @Transactional
-//    public ResponseEntity<?> delete(Authentication authentication, @RequestBody String json) throws JSONException {
-//        if (authentication == null || !authentication.isAuthenticated()) {
-//            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
-//        }
-//        final User user = this.userService.getUser(authentication.getName());
-//        if (user == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        final JSONObject jsonObject = new JSONObject(json);
-//        final long id = jsonObject.getLong("id");
-//        final FoodItem foodItemToRemove = user.getFoodItems(id);
-//        if (foodItemToRemove == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        user.removeFoodItems(foodItemToRemove);
-//        userService.saveUser(user);
-//        return ResponseEntity.noContent().build();
-//    }
+    }
+
+    @PostMapping("/update")
+    @Transactional
+    public ResponseEntity<?>update(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+        }
+
+        final FoodItem foodItemToSave = foodItemService.get(foodItemRequest.getId());
+        if (foodItemToSave == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        foodItemToSave.setName(foodItemRequest.getName());
+        foodItemToSave.setCalories(foodItemRequest.getCalories());
+        foodItemToSave.setFat(foodItemRequest.getProtein());
+        foodItemToSave.setCarbohydrates(foodItemRequest.getCarbohydrates());
+        foodItemToSave.setFat(foodItemRequest.getFat());
+        this.foodItemService.save(foodItemToSave);
+
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @PostMapping("/delete")
+    @Transactional
+    public ResponseEntity<?> delete(Authentication authentication, @RequestBody String json) throws JSONException {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+        }
+
+        final JSONObject jsonObject = new JSONObject(json);
+        final long id = jsonObject.getLong("id");
+        final FoodItem foodItemToRemove = foodItemService.get(id);
+        if (foodItemToRemove == null) {
+            return ResponseEntity.notFound().build();
+        }
+        foodItemService.delete(foodItemToRemove);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/delete/{id}")
+    @Transactional
+    public ResponseEntity<?>deleteById(@PathVariable Long id) {
+        this.foodItemService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
