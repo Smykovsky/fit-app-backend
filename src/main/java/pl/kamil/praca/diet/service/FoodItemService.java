@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.service.UserService;
 import pl.kamil.praca.diet.model.FoodItem;
+import pl.kamil.praca.diet.model.Meal;
 import pl.kamil.praca.diet.repository.FoodItemRepository;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FoodItemService {
     private final FoodItemRepository foodItemRepository;
+    private final MealService mealService;
     private final UserService userService;
 
 
@@ -21,12 +23,12 @@ public class FoodItemService {
         this.foodItemRepository.save(foodItem);
     }
 
-    public void addFoodItem(final FoodItem foodItem, User user) {
-        if (user == null) {
+    public void addFoodItem(final FoodItem foodItem, Meal meal) {
+        if (meal == null) {
             return;
         }
-        user.addFoodItems(foodItem);
-        this.userService.saveUser(user);
+        meal.addFoodItems(foodItem);
+        this.mealService.save(meal);
     }
 
     public List<FoodItem> getAll() {

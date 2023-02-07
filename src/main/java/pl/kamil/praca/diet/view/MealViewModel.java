@@ -14,7 +14,7 @@ public class MealViewModel {
     public MealViewModel(final Meal meal) {
         this.id = meal.getId();
         this.name = meal.getName();
-        this.foodItemName = meal.getFoodItems().getName();
+        this.foodItemName = meal.getFoodItems().toString();
 
     }
 }

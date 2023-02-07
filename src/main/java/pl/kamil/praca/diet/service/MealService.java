@@ -35,12 +35,12 @@ public class MealService {
             return ResponseEntity.notFound().build();
         }
 
-        final FoodItem foodItems = user.getFoodItems(mealRequest.getFoodItemId());
+//        final FoodItem foodItems = user.getFoodItems(mealRequest.getFoodItemId());
 //        if (foodItems == null) {
 //            return ResponseEntity.notFound().build();
 //        }
 
-        final Meal meal = new Meal(mealRequest.getName(), foodItems);
+        final Meal meal = new Meal(mealRequest.getName());
         this.mealRepository.save(meal);
 
         user.addMeal(meal);
@@ -54,17 +54,17 @@ public class MealService {
             return ResponseEntity.notFound().build();
         }
 
-        final FoodItem foodItems = user.getFoodItems(mealRequest.getFoodItemId());
-        if (foodItems == null) {
-            return ResponseEntity.notFound().build();
-        }
+//        final FoodItem foodItems = user.getFoodItems(mealRequest.getFoodItemId());
+//        if (foodItems == null) {
+//            return ResponseEntity.notFound().build();
+//        }
 
         final Meal oldMeal = mealRepository.findById(mealRequest.getId()).orElse(null);
         if (oldMeal == null) {
             return ResponseEntity.notFound().build();
         }
 
-        final Meal newMeal = new Meal(mealRequest.getName(), foodItems);
+        final Meal newMeal = new Meal(mealRequest.getName());
         this.mealRepository.save(newMeal);
         user.removeMeal(mealRequest.getId());
         user.addMeal(newMeal);

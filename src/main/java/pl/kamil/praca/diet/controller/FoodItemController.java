@@ -13,10 +13,12 @@ import pl.kamil.praca.authentication.service.UserService;
 import pl.kamil.praca.diet.dto.FoodItemRequest;
 import pl.kamil.praca.diet.model.FoodItem;
 import pl.kamil.praca.diet.model.Meal;
+import pl.kamil.praca.diet.repository.MealRepository;
 import pl.kamil.praca.diet.service.FoodItemService;
 import pl.kamil.praca.diet.service.MealService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ public class FoodItemController {
     private final FoodItemService foodItemService;
     private final UserService userService;
     private final MealService mealService;
+    private final MealRepository mealRepository;
 
     @PostMapping("/add")
     @Transactional
@@ -38,86 +41,90 @@ public class FoodItemController {
             return ResponseEntity.notFound().build();
         }
 
-        this.foodItemService.addFoodItem(new FoodItem(foodItemRequest), user);
+        final Meal meal = mealRepository.findById(foodItemRequest.getMealId()).orElse(null);
+
+        this.foodItemService.addFoodItem(new FoodItem(foodItemRequest), meal);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<?>getFoodItem(Authentication authentication, @PathVariable @Valid Long id) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
-        }
-        final User user = this.userService.getUser(authentication.getName());
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
+//    @GetMapping("/get/{id}")
+//    public ResponseEntity<?>getFoodItem(Authentication authentication, @PathVariable @Valid Long id) {
+//        if (authentication == null || !authentication.isAuthenticated()) {
+//            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+//        }
+//        final User user = this.userService.getUser(authentication.getName());
+//        if (user == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        List<Meal> meals = user.getMeals();
+//
+//        final FoodItem foodItem = user.getFoodItems(id);
+//        if (foodItem == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        return ResponseEntity.ok(foodItem);
+//    }
+//
+//    @GetMapping("/get")
+//    public ResponseEntity<?>GetFoodItems(Authentication authentication) {
+//        if (authentication == null || !authentication.isAuthenticated()) {
+//            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+//        }
+//        final User user = this.userService.getUser(authentication.getName());
+//        if (user == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        return ResponseEntity.ok(user.getFoodItems());
+//    }
 
-        final FoodItem foodItem = user.getFoodItems(id);
-        if (foodItem == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(foodItem);
-    }
-
-    @GetMapping("/get")
-    public ResponseEntity<?>GetFoodItems(Authentication authentication) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
-        }
-        final User user = this.userService.getUser(authentication.getName());
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(user.getFoodItems());
-    }
-
-    @PostMapping("/update")
-    @Transactional
-    public ResponseEntity<?>update(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
-        }
-        final User user = this.userService.getUser(authentication.getName());
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        final FoodItem foodItemToSave = user.getFoodItems(foodItemRequest.getId());
-        if (foodItemToSave == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        foodItemToSave.setName(foodItemRequest.getName());
-        foodItemToSave.setCalories(foodItemRequest.getCalories());
-        foodItemToSave.setFat(foodItemRequest.getProtein());
-        foodItemToSave.setCarbohydrates(foodItemRequest.getCarbohydrates());
-        foodItemToSave.setFat(foodItemRequest.getFat());
-        this.foodItemService.save(foodItemToSave);
-
-        return ResponseEntity.noContent().build();
-    }
+//    @PostMapping("/update")
+//    @Transactional
+//    public ResponseEntity<?>update(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
+//        if (authentication == null || !authentication.isAuthenticated()) {
+//            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+//        }
+//        final User user = this.userService.getUser(authentication.getName());
+//        if (user == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        final FoodItem foodItemToSave = user.getFoodItems(foodItemRequest.getId());
+//        if (foodItemToSave == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        foodItemToSave.setName(foodItemRequest.getName());
+//        foodItemToSave.setCalories(foodItemRequest.getCalories());
+//        foodItemToSave.setFat(foodItemRequest.getProtein());
+//        foodItemToSave.setCarbohydrates(foodItemRequest.getCarbohydrates());
+//        foodItemToSave.setFat(foodItemRequest.getFat());
+//        this.foodItemService.save(foodItemToSave);
+//
+//        return ResponseEntity.noContent().bu`ild();
+//    }
 
 
-    @PostMapping("/delete")
-    @Transactional
-    public ResponseEntity<?> delete(Authentication authentication, @RequestBody String json) throws JSONException {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
-        }
-        final User user = this.userService.getUser(authentication.getName());
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        final JSONObject jsonObject = new JSONObject(json);
-        final long id = jsonObject.getLong("id");
-        final FoodItem foodItemToRemove = user.getFoodItems(id);
-        if (foodItemToRemove == null) {
-            return ResponseEntity.notFound().build();
-        }
-        user.removeFoodItems(foodItemToRemove);
-        userService.saveUser(user);
-        return ResponseEntity.noContent().build();
-    }
+//    @PostMapping("/delete")
+//    @Transactional
+//    public ResponseEntity<?> delete(Authentication authentication, @RequestBody String json) throws JSONException {
+//        if (authentication == null || !authentication.isAuthenticated()) {
+//            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+//        }
+//        final User user = this.userService.getUser(authentication.getName());
+//        if (user == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        final JSONObject jsonObject = new JSONObject(json);
+//        final long id = jsonObject.getLong("id");
+//        final FoodItem foodItemToRemove = user.getFoodItems(id);
+//        if (foodItemToRemove == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        user.removeFoodItems(foodItemToRemove);
+//        userService.saveUser(user);
+//        return ResponseEntity.noContent().build();
+//    }
 }
