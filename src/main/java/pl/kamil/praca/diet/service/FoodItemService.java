@@ -29,12 +29,14 @@ public class FoodItemService {
         this.foodItemRepository.save(foodItem);
     }
 
-    public void addFoodItem(final FoodItem foodItem, Meal meal) {
+    public void addFoodItem(final User user, final FoodItem foodItem, Meal meal) {
         if (meal == null) {
             return;
         }
+        this.save(foodItem);
         meal.addFoodItems(foodItem);
         this.mealService.save(meal);
+        this.userService.saveUser(user);
     }
 
     public List<FoodItem> getAll() {

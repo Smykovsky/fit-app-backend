@@ -40,9 +40,11 @@ public class FoodItemController {
             return ResponseEntity.notFound().build();
         }
 
-        final Meal meal = mealRepository.findById(foodItemRequest.getMealId()).orElse(null);
-
-        this.foodItemService.addFoodItem(new FoodItem(foodItemRequest), meal);
+        final Meal meal = user.getMeal(foodItemRequest.getMealId());
+        if (meal == null) {
+            return ResponseEntity.notFound().build();
+        }
+        this.foodItemService.addFoodItem(user,new FoodItem(foodItemRequest), meal);
         return ResponseEntity.noContent().build();
     }
 
