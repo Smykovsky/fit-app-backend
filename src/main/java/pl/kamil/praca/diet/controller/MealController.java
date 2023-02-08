@@ -48,7 +48,7 @@ public class MealController {
 
     @PostMapping("/update")
     @Transactional
-    public ResponseEntity<?> update(Authentication authentication, @RequestBody @Valid MealRequest mealRequest) {
+    public ResponseEntity<?> updateMeal(Authentication authentication, @RequestBody @Valid MealRequest mealRequest) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -57,18 +57,17 @@ public class MealController {
 
     @PostMapping("/delete")
     @Transactional
-    public ResponseEntity<?>delete(Authentication authentication, @RequestBody String json) throws JSONException {
+    public ResponseEntity<?>deleteMeal(Authentication authentication, @RequestBody String json) throws JSONException {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
         return this.mealService.deleteMeal(json, authentication);
     }
 
-    @PostMapping("/{mealId}/delete/item/{itemId}")
-    @Transactional
-    public ResponseEntity<?>deleteItemById(Authentication authentication, @PathVariable Long mealId, @PathVariable Long itemId) {
-        this.mealService.deleteItemById(authentication, mealId, itemId);
-        return ResponseEntity.noContent().build();
-
-    }
+//    @PostMapping("/{mealId}/delete/item/{itemId}")
+//    @Transactional
+//    public ResponseEntity<?>deleteItemById(Authentication authentication, @PathVariable Long mealId, @PathVariable Long itemId) {
+//        this.mealService.deleteItemById(authentication, mealId, itemId);
+//        return ResponseEntity.noContent().build();
+//    }
 }

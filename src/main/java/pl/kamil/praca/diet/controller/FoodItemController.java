@@ -61,7 +61,7 @@ public class FoodItemController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<?>GetFoodItems(Authentication authentication) {
+    public ResponseEntity<?>getFoodItems(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -74,7 +74,7 @@ public class FoodItemController {
 
     @PostMapping("/update")
     @Transactional
-    public ResponseEntity<?>update(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
+    public ResponseEntity<?>updateItem(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
