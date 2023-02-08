@@ -106,6 +106,10 @@ public class FoodItemController {
         final long mealId = jsonObject.getLong("mealId");
         final long itemId = jsonObject.getLong("itemId");
 
+        if (foodItemService.get(itemId) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         this.foodItemService.delete(mealId, itemId);
         return ResponseEntity.noContent().build();
     }
