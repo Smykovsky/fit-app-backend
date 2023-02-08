@@ -98,6 +98,7 @@ public class MealService {
             return ResponseEntity.notFound().build();
         }
         user.removeMeal(mealToRemove);
+        mealRepository.delete(mealToRemove);
         userService.saveUser(user);
         return ResponseEntity.noContent().build();
     }

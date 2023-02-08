@@ -27,7 +27,6 @@ import java.util.List;
 public class FoodItemController {
     private final FoodItemService foodItemService;
     private final UserService userService;
-    private final MealRepository mealRepository;
 
     @PostMapping("/add")
     @Transactional
@@ -119,9 +118,4 @@ public class FoodItemController {
         this.foodItemService.delete(mealId, itemId);
         return ResponseEntity.noContent().build();
     }
-
-//    @DeleteMapping("/meal/foodItem/{id}")
-//    public void foodItemById(@PathVariable Long id) {
-//        foodItemService.delete(id);
-//    }
 }
