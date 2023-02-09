@@ -74,7 +74,7 @@ public class FoodItemController {
 
     @PostMapping("/update")
     @Transactional
-    public ResponseEntity<?>updateItem(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
+    public ResponseEntity<?>updateFoodItem(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -109,11 +109,4 @@ public class FoodItemController {
         this.foodItemService.delete(mealId, itemId);
         return ResponseEntity.noContent().build();
     }
-
-//    @PostMapping("/meal/{mealId}/delete/{itemId}")
-//    @Transactional
-//    public ResponseEntity<?>deleteById(@PathVariable Long mealId, @PathVariable Long itemId) {
-//        this.foodItemService.delete(mealId, itemId);
-//        return ResponseEntity.noContent().build();
-//    }
 }

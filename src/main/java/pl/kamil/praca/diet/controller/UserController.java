@@ -56,4 +56,6 @@ public class UserController {
         responseMap.put("message", "Pomyślnie spersonalizowano użytkownika :)");
         return ResponseEntity.ok(responseMap);
     }
+
+
 }
