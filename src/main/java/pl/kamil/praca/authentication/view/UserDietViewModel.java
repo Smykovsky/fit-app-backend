@@ -14,15 +14,19 @@ public class UserDietViewModel {
     private final String username;
     private final List<Meal> meals;
     private final Double caloriesEaten;
-    private final Double protein;
+    private final Double proteins;
     private final Double carbohydrates;
-    private final Double fat;
+    private final Double fats;
 
     public UserDietViewModel(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.meals = user.getMeals();
-        this.caloriesEaten =
+        this.caloriesEaten = user.getEatenCalories();
+        this.proteins = user.getEatenProteins();
+        this.carbohydrates = user.getEatenCarbohydrates();
+        this.fats = user.getEatenFats();
+
     }
 
 

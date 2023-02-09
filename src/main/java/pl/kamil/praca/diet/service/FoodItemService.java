@@ -68,7 +68,7 @@ public class FoodItemService {
         }
         User user = userService.getUser(authentication.getName());
 
-        double sum = user.getEatCalories();
+        double sum = user.getEatenCalories();
     }
 
 }
