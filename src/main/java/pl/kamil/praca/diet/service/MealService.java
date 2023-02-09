@@ -102,20 +102,4 @@ public class MealService {
         userService.saveUser(user);
         return ResponseEntity.noContent().build();
     }
-
-    public ResponseEntity<?>deleteItemById(Authentication authentication, Long mealId, Long itemId) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
-        }
-
-        final User user = this.userService.getUser(authentication.getName());
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        final Meal meal = this.mealRepository.findById(mealId).orElse(null);
-        meal.removeFoodItems(itemId);
-        foodItemRepository.deleteById(itemId);
-        mealRepository.save(meal);
-        return ResponseEntity.noContent().build();
-    }
 }
