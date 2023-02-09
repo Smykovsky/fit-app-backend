@@ -99,19 +99,19 @@ public class User {
     public Double getEatenProteins() {
         return  meals.stream()
                 .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
+                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getProtein()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
     public Double getEatenCarbohydrates() {
         return  meals.stream()
                 .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
+                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCarbohydrates()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
     public Double getEatenFats() {
         return  meals.stream()
                 .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
+                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getFat()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
 }

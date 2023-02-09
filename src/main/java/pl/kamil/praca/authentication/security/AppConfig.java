@@ -25,7 +25,6 @@ import java.util.List;
 public class AppConfig {
 
     private final UserRepository userRepository;
-    private final UserService userService;
 
     @Bean
     public UserDetailsService userDetailsService() {

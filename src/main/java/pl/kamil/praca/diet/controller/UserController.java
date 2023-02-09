@@ -3,12 +3,10 @@ package pl.kamil.praca.diet.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.service.UserService;
+import pl.kamil.praca.authentication.view.UserDietViewModel;
 import pl.kamil.praca.authentication.view.UserViewModel;
 import pl.kamil.praca.diet.dto.PersonalizeRequest;
 import pl.kamil.praca.diet.service.FoodItemService;
@@ -60,6 +58,7 @@ public class UserController {
         return ResponseEntity.ok(responseMap);
     }
 
+    @GetMapping("/data")
     public ResponseEntity<?> getUserData(Authentication authentication) {
         Map<String, Object> responseMap = new HashMap<>();
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -73,7 +72,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(new UserViewModel(user));
+        return ResponseEntity.ok(new UserDietViewModel(user));
     }
 
 

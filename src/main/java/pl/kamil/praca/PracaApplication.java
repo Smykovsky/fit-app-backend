@@ -2,7 +2,6 @@ package pl.kamil.praca;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import pl.kamil.praca.authentication.model.User;
 
 @SpringBootApplication
 public class PracaApplication {
@@ -10,5 +9,4 @@ public class PracaApplication {
     public static void main(String[] args) {
         SpringApplication.run(PracaApplication.class, args);
     }
-
 }
