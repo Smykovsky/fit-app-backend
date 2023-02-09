@@ -1,5 +1,7 @@
 package pl.kamil.praca.authentication.security;
 
+import org.springframework.security.core.Authentication;
+import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,12 +15,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.kamil.praca.authentication.service.UserService;
+import pl.kamil.praca.diet.model.Meal;
+
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
 
     private final UserRepository userRepository;
+    private final UserService userService;
 
     @Bean
     public UserDetailsService userDetailsService() {

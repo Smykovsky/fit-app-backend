@@ -62,16 +62,6 @@ public class FoodItemService {
         this.foodItemRepository.delete(foodItem);
     }
 
-    public void getCaloriesFromUser(Authentication authentication) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return;
-        }
-        User user = userService.getUser(authentication.getName());
-        List<Meal> meals = user.getMeals();
-        double sum = meals.stream()
-                .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
-                .reduce(0.0, Double::sum);
-    }
+
 
 }

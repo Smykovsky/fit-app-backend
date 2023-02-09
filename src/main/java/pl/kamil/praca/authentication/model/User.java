@@ -3,6 +3,7 @@ package pl.kamil.praca.authentication.model;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.kamil.praca.diet.model.FoodItem;
@@ -41,6 +42,8 @@ public class User {
     private String goal;
     @Nullable
     private Double calorieIntakeGoal;
+    @Nullable
+    private Double caloriesEaten;
     @Nullable
     private LocalDateTime joinedDate;
 

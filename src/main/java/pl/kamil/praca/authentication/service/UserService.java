@@ -1,5 +1,6 @@
 package pl.kamil.praca.authentication.service;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -93,5 +94,21 @@ public class UserService implements UserDetailsService {
         } else if (user.getGoal().equals("Zbudować masę")) {
             return caloriesGoal + 300;
         } else return caloriesGoal;
+    }
+
+    public Double getCaloriesFromUser(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+        User user = getUser(authentication.getName());
+        List<Meal> meals = user.getMeals();
+        double calories = meals.stream()
+                .map(Meal::getFoodItems)
+                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
+                .reduce(0.0, Double::sum);
+
+        double x;
+
+        return calories;
     }
 }
