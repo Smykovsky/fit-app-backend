@@ -68,10 +68,10 @@ public class FoodItemService {
         }
         User user = userService.getUser(authentication.getName());
         List<Meal> meals = user.getMeals();
-        meals.stream()
+        double sum = meals.stream()
                 .map(Meal::getFoodItems)
-                .map()
-                .reduce(0, Double::sum);
+                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
+                .reduce(0.0, Double::sum);
     }
 
 }
