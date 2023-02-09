@@ -24,23 +24,37 @@ public class UserProgressService {
         this.userProgressRepository.save(userProgress);
     }
 
-    public void addUserProgress(final String username, final UserProgressRequest userProgressRequest) {
+//    public void addUserProgress(final String username, final UserProgressRequest userProgressRequest) {
+////        if (user == null) {
+////            return;
+////        }
+////        user.addUserProgress(userProgress);
+////        this.userProgressRepository.save(userProgress);
+////        this.userService.saveUser(user);
+//        final User user = userService.getUser(username);
 //        if (user == null) {
 //            return;
 //        }
-//        user.addUserProgress(userProgress);
+//
+//        final UserProgress userProgress = new UserProgress(userProgressRequest);
 //        this.userProgressRepository.save(userProgress);
-//        this.userService.saveUser(user);
+//
+//        user.addUserProgress(userProgress);
+//        userService.saveUser(user);
+//    }
+
+    public ResponseEntity<?> addUserProgress(final String username, final UserProgressRequest userProgressRequest) {
         final User user = userService.getUser(username);
         if (user == null) {
-            return;
+            return ResponseEntity.notFound().build();
         }
 
-        final UserProgress userProgress = new UserProgress(userProgressRequest);
+        final UserProgress userProgress = new UserProgress(userProgressRequest.getNewWeight());
         this.userProgressRepository.save(userProgress);
 
         user.addUserProgress(userProgress);
         userService.saveUser(user);
+        return ResponseEntity.noContent().build();
     }
 
     public List<UserProgress>getAll() {

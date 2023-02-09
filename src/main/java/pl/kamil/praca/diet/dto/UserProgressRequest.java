@@ -15,8 +15,4 @@ public class UserProgressRequest {
     @Nullable
     private LocalDate date;
 
-    public UserProgressRequest(Double newWeight) {
-        this.newWeight = newWeight;
-        this.date = LocalDate.now();
-    }
 }

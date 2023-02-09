@@ -114,17 +114,4 @@ public class UserProgressController {
         userService.saveUser(user);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -21,8 +21,8 @@ public class UserProgress {
 
     private Double newWeight;
 
-    public UserProgress(UserProgressRequest userProgressRequest) {
+    public UserProgress(Double newWeight) {
         this.date = LocalDate.now();
-        this.newWeight = userProgressRequest.getNewWeight();
+        this.newWeight = newWeight;
     }
 }
