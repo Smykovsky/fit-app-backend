@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.repository.RoleRepository;
 import pl.kamil.praca.authentication.repository.UserRepository;
+import pl.kamil.praca.diet.model.Meal;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,7 +93,5 @@ public class UserService implements UserDetailsService {
         } else if (user.getGoal().equals("Zbudować masę")) {
             return caloriesGoal + 300;
         } else return caloriesGoal;
-
     }
-
 }

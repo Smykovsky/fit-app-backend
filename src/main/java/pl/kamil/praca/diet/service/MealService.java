@@ -16,6 +16,8 @@ import pl.kamil.praca.diet.repository.FoodItemRepository;
 import pl.kamil.praca.diet.repository.MealRepository;
 import pl.kamil.praca.diet.view.MealViewModel;
 
+import java.util.List;
+
 
 @Service
 @Slf4j
@@ -27,6 +29,10 @@ public class MealService {
 
     public void save(Meal meal) {
         this.mealRepository.save(meal);
+    }
+
+    public List<Meal> getAll() {
+        return this.mealRepository.findAll();
     }
 
     public ResponseEntity<?> addMeal(final String username, final MealRequest mealRequest) {
@@ -102,4 +108,6 @@ public class MealService {
         userService.saveUser(user);
         return ResponseEntity.noContent().build();
     }
+
+
 }

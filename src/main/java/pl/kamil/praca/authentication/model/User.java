@@ -86,23 +86,4 @@ public class User {
     public UserProgress getUserProgress(Long id) {
         return this.progressList.stream().filter(progress -> progress.getId().equals(id)).findFirst().orElse(null);
     }
-
-    //food items methods
-//    public void addFoodItems(FoodItem foodItem) {
-//        this.foodItems.add(foodItem);
-//    }
-//    public void removeFoodItems(FoodItem foodItem) {
-//        this.foodItems.remove(foodItem);
-//    }
-//    public void removeFoodItems(Long id) {
-//        this.foodItems.removeIf(foodItem -> foodItem.getId().equals(id));
-//    }
-//    public FoodItem getFoodItems(Long id) {
-//        return this.foodItems.stream().filter(foodItem -> foodItem.getId().equals(id)).findFirst().orElse(null);
-//    }
-
-
-
-
-
 }

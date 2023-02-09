@@ -33,7 +33,7 @@ public class Meal {
     public void removeFoodItems(Long id) {
         this.foodItems.removeIf(foodItem -> foodItem.getId().equals(id));
     }
-    public FoodItem getFoodItems(Long id) {
+    public FoodItem getFoodItem(Long id) {
         return this.foodItems.stream().filter(foodItem -> foodItem.getId().equals(id)).findFirst().orElse(null);
     }
 
