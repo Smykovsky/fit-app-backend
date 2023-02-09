@@ -19,7 +19,7 @@ import java.time.LocalDate;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/userProgress")
+@RequestMapping("/api/progress")
 public class UserProgressController {
     private final UserProgressService userProgressService;
     private final UserService userService;
@@ -34,7 +34,9 @@ public class UserProgressController {
             return ResponseEntity.notFound().build();
         }
 
-        this.userProgressService.addUserProgress(new UserProgress(userProgressRequest), user);
+        this.userProgressService.addUserProgress(authentication.getName(), userProgressRequest);
+        user.setWeight(userProgressRequest.getNewWeight());
+        userService.saveUser(user);
         return ResponseEntity.noContent().build();
     }
 
@@ -86,6 +88,7 @@ public class UserProgressController {
         userProgressToSave.setDate(LocalDate.now());
         userProgressToSave.setNewWeight(userProgressRequest.getNewWeight());
 
+        userService.saveUser(user);
         return ResponseEntity.noContent().build();
     }
 

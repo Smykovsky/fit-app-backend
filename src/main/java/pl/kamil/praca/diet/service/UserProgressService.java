@@ -2,9 +2,13 @@ package pl.kamil.praca.diet.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.service.UserService;
+import pl.kamil.praca.diet.dto.MealRequest;
+import pl.kamil.praca.diet.dto.UserProgressRequest;
+import pl.kamil.praca.diet.model.Meal;
 import pl.kamil.praca.diet.model.UserProgress;
 import pl.kamil.praca.diet.repository.UserProgressRepository;
 
@@ -20,12 +24,23 @@ public class UserProgressService {
         this.userProgressRepository.save(userProgress);
     }
 
-    public void addUserProgress(final UserProgress userProgress, User user) {
+    public void addUserProgress(final String username, final UserProgressRequest userProgressRequest) {
+//        if (user == null) {
+//            return;
+//        }
+//        user.addUserProgress(userProgress);
+//        this.userProgressRepository.save(userProgress);
+//        this.userService.saveUser(user);
+        final User user = userService.getUser(username);
         if (user == null) {
             return;
         }
-        user.addUserProgress(this.userProgressRepository.save(userProgress));
-        this.userService.saveUser(user);
+
+        final UserProgress userProgress = new UserProgress(userProgressRequest);
+        this.userProgressRepository.save(userProgress);
+
+        user.addUserProgress(userProgress);
+        userService.saveUser(user);
     }
 
     public List<UserProgress>getAll() {

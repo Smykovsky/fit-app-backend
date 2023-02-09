@@ -11,10 +11,13 @@ import java.time.LocalDate;
 public class UserProgressRequest {
     @Nullable
     private Long id;
+    @Nullable
+    private LocalDate date;
 
     private Double newWeight;
 
     public UserProgressRequest(Double newWeight) {
+        this.date = LocalDate.now();
         this.newWeight = newWeight;
     }
 }
