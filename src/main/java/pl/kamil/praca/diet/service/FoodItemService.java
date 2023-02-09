@@ -62,6 +62,13 @@ public class FoodItemService {
         this.foodItemRepository.delete(foodItem);
     }
 
+    public void getCaloriesFromUser(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return;
+        }
+        User user = userService.getUser(authentication.getName());
 
+        double sum = user.getEatCalories();
+    }
 
 }

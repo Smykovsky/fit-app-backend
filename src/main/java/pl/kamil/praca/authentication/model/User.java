@@ -89,4 +89,11 @@ public class User {
     public UserProgress getUserProgress(Long id) {
         return this.progressList.stream().filter(progress -> progress.getId().equals(id)).findFirst().orElse(null);
     }
+
+    public Double getEatCalories() {
+        return  meals.stream()
+                .map(Meal::getFoodItems)
+                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
+                .reduce(0.0, Double::sum);
+    }
 }
