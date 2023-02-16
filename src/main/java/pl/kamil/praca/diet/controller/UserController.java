@@ -39,18 +39,18 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-            user.setAge(personalizeRequest.getAge());
-            user.setWeight(personalizeRequest.getWeight());
-            user.setHeight(personalizeRequest.getHeight());
-            user.setGender(personalizeRequest.getGender());
-            user.setGoal(personalizeRequest.getGoal());
+        user.setAge(personalizeRequest.getAge());
+        user.setWeight(personalizeRequest.getWeight());
+        user.setHeight(personalizeRequest.getHeight());
+        user.setGender(personalizeRequest.getGender());
+        user.setGoal(personalizeRequest.getGoal());
 
-            if (personalizeRequest.getGender().equals(MAN)) {
-                user.setCalorieIntakeGoal(userService.calculateCaloriesMan(user));
-                userService.saveUser(user);
-            } else
-                user.setCalorieIntakeGoal(userService.calculateCaloriesWomen(user));
-                userService.saveUser(user);
+        if (personalizeRequest.getGender().equals(MAN)) {
+            user.setCalorieIntakeGoal(userService.calculateCaloriesMan(user));
+            userService.saveUser(user);
+        } else
+            user.setCalorieIntakeGoal(userService.calculateCaloriesWomen(user));
+        userService.saveUser(user);
 
         responseMap.put("error", false);
         responseMap.put("user", user);

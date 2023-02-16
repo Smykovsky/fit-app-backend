@@ -25,7 +25,7 @@ public class UserProgressController {
     private final UserService userService;
 
     @PostMapping("/add")
-    public ResponseEntity<?>addUserProgress(Authentication authentication, @RequestBody @Valid UserProgressRequest userProgressRequest) {
+    public ResponseEntity<?> addUserProgress(Authentication authentication, @RequestBody @Valid UserProgressRequest userProgressRequest) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -72,7 +72,7 @@ public class UserProgressController {
 
     @PostMapping("/update")
     @Transactional
-    public ResponseEntity<?>updateUserProgress(Authentication authentication, @RequestBody @Valid UserProgressRequest userProgressRequest) {
+    public ResponseEntity<?> updateUserProgress(Authentication authentication, @RequestBody @Valid UserProgressRequest userProgressRequest) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -94,7 +94,7 @@ public class UserProgressController {
 
     @PostMapping("/delete")
     @Transactional
-    public ResponseEntity<?>deleteUserProgress(Authentication authentication, @RequestBody String json) throws JSONException {
+    public ResponseEntity<?> deleteUserProgress(Authentication authentication, @RequestBody String json) throws JSONException {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -114,17 +114,6 @@ public class UserProgressController {
         userService.saveUser(user);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

@@ -43,7 +43,7 @@ public class UserProgressService {
         userService.saveUser(user);
     }
 
-    public List<UserProgress>getAll() {
+    public List<UserProgress> getAll() {
         return this.userProgressRepository.findAll();
     }
 

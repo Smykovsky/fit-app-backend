@@ -40,6 +40,7 @@ public class FoodItemService {
     public List<FoodItem> getAll() {
         return this.foodItemRepository.findAll();
     }
+
     public FoodItem get(Long id) {
         return this.foodItemRepository.findById(id).orElse(null);
     }

@@ -9,7 +9,8 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Data
 @Table(name = "user_progress")
 public class UserProgress {
@@ -17,7 +18,7 @@ public class UserProgress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   private LocalDate date;
+    private LocalDate date;
 
     private Double newWeight;
 

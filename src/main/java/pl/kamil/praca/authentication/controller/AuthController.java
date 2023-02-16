@@ -35,7 +35,7 @@ public class AuthController {
     private final UserService userService;
     private final TokenRepository tokenRepository;
     private final RefreshTokenService refreshTokenService;
-//    private final AuthenticationManager authenticationManager;
+    //    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
 
@@ -89,7 +89,7 @@ public class AuthController {
 
             String token = jwtUtil.buildJwt(userDetails);
 
-            tokenRepository.save(new Token(null ,token, user.getUsername()));
+            tokenRepository.save(new Token(null, token, user.getUsername()));
             final RefreshToken refreshToken = this.refreshTokenService.createRefreshToken(user.getUsername());
 
             responseMap.put("error", false);
@@ -159,7 +159,7 @@ public class AuthController {
                     final String token = jwtUtil.buildJwt(user);
                     this.tokenRepository.save(new Token(null, token, username));
                     responseMap.put("error", false);
-                    responseMap.put("access_token", token   );
+                    responseMap.put("access_token", token);
                     responseMap.put("refresh_token", requestRefreshToken);
                     return ResponseEntity.ok(responseMap);
                 })

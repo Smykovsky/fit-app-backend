@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsernameOrEmail(username, email);
     }
 
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
@@ -68,7 +68,7 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean existsByUsernameOrEmail(final String email, final String username) {
-        return this.userRepository.existsByUsernameOrEmail(email,username);
+        return this.userRepository.existsByUsernameOrEmail(email, username);
     }
 
     public User saveUser(User user) {

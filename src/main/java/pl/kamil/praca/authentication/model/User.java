@@ -18,7 +18,8 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 @Data
 @Table(name = "users")
@@ -66,50 +67,59 @@ public class User {
     public void addMeal(Meal meal) {
         this.meals.add(meal);
     }
+
     public void removeMeal(Meal meal) {
         this.meals.remove(meal);
     }
+
     public void removeMeal(Long id) {
         this.meals.removeIf(meal -> meal.getId().equals(id));
     }
+
     public Meal getMeal(Long id) {
         return this.meals.stream().filter(meal -> meal.getId().equals(id)).findFirst().orElse(null);
     }
 
     //user progress methods
-    public void addUserProgress(UserProgress userProgress){
+    public void addUserProgress(UserProgress userProgress) {
         this.progressList.add(userProgress);
     }
+
     public void removeUserProgress(UserProgress userProgress) {
         this.progressList.remove(userProgress);
     }
+
     public void removeUserProgress(Long id) {
         this.progressList.removeIf(progress -> progress.getId().equals(id));
     }
+
     public UserProgress getUserProgress(Long id) {
         return this.progressList.stream().filter(progress -> progress.getId().equals(id)).findFirst().orElse(null);
     }
 
     public Double getEatenCalories() {
-        return  meals.stream()
+        return meals.stream()
                 .map(Meal::getFoodItems)
                 .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
+
     public Double getEatenProteins() {
-        return  meals.stream()
+        return meals.stream()
                 .map(Meal::getFoodItems)
                 .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getProtein()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
+
     public Double getEatenCarbohydrates() {
-        return  meals.stream()
+        return meals.stream()
                 .map(Meal::getFoodItems)
                 .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCarbohydrates()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
+
     public Double getEatenFats() {
-        return  meals.stream()
+        return meals.stream()
                 .map(Meal::getFoodItems)
                 .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getFat()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);

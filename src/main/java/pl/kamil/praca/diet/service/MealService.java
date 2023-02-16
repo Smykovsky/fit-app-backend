@@ -66,7 +66,7 @@ public class MealService {
         user.addMeal(newMeal);
 
         return ResponseEntity.noContent().build();
-        }
+    }
 
     public ResponseEntity<?> getMeal(Authentication authentication, Long id) {
         if (authentication == null || !authentication.isAuthenticated()) {

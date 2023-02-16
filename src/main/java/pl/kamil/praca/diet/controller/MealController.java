@@ -35,7 +35,7 @@ public class MealController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<?>getMeals(Authentication authentication) {
+    public ResponseEntity<?> getMeals(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -57,7 +57,7 @@ public class MealController {
 
     @PostMapping("/delete")
     @Transactional
-    public ResponseEntity<?>deleteMeal(Authentication authentication, @RequestBody String json) throws JSONException {
+    public ResponseEntity<?> deleteMeal(Authentication authentication, @RequestBody String json) throws JSONException {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
