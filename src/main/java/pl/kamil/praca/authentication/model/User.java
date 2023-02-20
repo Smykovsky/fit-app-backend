@@ -10,6 +10,7 @@ import pl.kamil.praca.diet.model.FoodItem;
 import pl.kamil.praca.diet.model.Meal;
 import pl.kamil.praca.diet.model.UserProgress;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -93,25 +94,25 @@ public class User {
     public Double getEatenCalories() {
         return  meals.stream()
                 .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
+                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getDateAdded().isAfter(LocalDate.now())).map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
     public Double getEatenProteins() {
         return  meals.stream()
                 .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getProtein()).reduce(0.0, Double::sum))
+                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getDateAdded().isAfter(LocalDate.now())).map(foodItem -> foodItem.getProtein()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
     public Double getEatenCarbohydrates() {
         return  meals.stream()
                 .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCarbohydrates()).reduce(0.0, Double::sum))
+                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getDateAdded().isAfter(LocalDate.now())).map(foodItem -> foodItem.getCarbohydrates()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
     public Double getEatenFats() {
         return  meals.stream()
                 .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getFat()).reduce(0.0, Double::sum))
+                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getDateAdded().isAfter(LocalDate.now())).map(foodItem -> foodItem.getFat()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
 }

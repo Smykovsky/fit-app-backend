@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import pl.kamil.praca.diet.dto.FoodItemRequest;
 
+import java.time.LocalDate;
+
 
 @Entity
 @AllArgsConstructor
@@ -21,6 +23,7 @@ public class FoodItem {
     private Double protein;
     private Double carbohydrates;
     private Double fat;
+    private LocalDate dateAdded;
 
     public FoodItem(FoodItemRequest foodItemDto) {
         this.id = null;
@@ -29,5 +32,6 @@ public class FoodItem {
         this.protein = foodItemDto.getProtein();
         this.carbohydrates = foodItemDto.getCarbohydrates();
         this.fat = foodItemDto.getFat();
+        this.dateAdded = LocalDate.now();
     }
 }
