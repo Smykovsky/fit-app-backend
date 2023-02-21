@@ -46,8 +46,10 @@ public class User {
     private Double calorieIntakeGoal;
     @Nullable
     private Double caloriesEaten;
-    @Nullable
-    private LocalDateTime joinedDate;
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+    @Column(name = "updated_at")
+    private LocalDate updatedAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
@@ -57,6 +59,17 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserProgress> progressList; // user's progress list
+
+
+    @PrePersist
+    void prePersist() {
+        this.createdAt = LocalDate.now();
+    }
+
+    @PreUpdate
+    void preUpdate() {
+        this.updatedAt = LocalDate.now();
+    }
 
     public Collection<GrantedAuthority> roleToAuthority() {
         final Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
@@ -101,28 +114,28 @@ public class User {
     public Double getEatenCalories() {
         return meals.stream()
                 .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getDateAdded().isAfter(LocalDate.now())).map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
+                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getCreatedAt().isEqual(LocalDate.now())).map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
 
     public Double getEatenProteins() {
         return meals.stream()
                 .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getDateAdded().isAfter(LocalDate.now())).map(foodItem -> foodItem.getProtein()).reduce(0.0, Double::sum))
+                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getCreatedAt().isEqual(LocalDate.now())).map(foodItem -> foodItem.getProtein()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
 
     public Double getEatenCarbohydrates() {
         return meals.stream()
                 .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getDateAdded().isAfter(LocalDate.now())).map(foodItem -> foodItem.getCarbohydrates()).reduce(0.0, Double::sum))
+                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getCreatedAt().isEqual(LocalDate.now())).map(foodItem -> foodItem.getCarbohydrates()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
 
     public Double getEatenFats() {
         return meals.stream()
                 .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getDateAdded().isAfter(LocalDate.now())).map(foodItem -> foodItem.getFat()).reduce(0.0, Double::sum))
+                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getCreatedAt().isEqual(LocalDate.now())).map(foodItem -> foodItem.getFat()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
 }

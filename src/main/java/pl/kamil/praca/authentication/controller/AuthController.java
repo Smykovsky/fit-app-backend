@@ -57,7 +57,6 @@ public class AuthController {
             user.setEmail(registerRequest.getEmail());
             user.setUsername(registerRequest.getUsername());
             user.setPassword(registerRequest.getPassword());
-            user.setJoinedDate(LocalDateTime.now());
             userService.saveUser(user);
             responseMap.put("error", false);
             responseMap.put("username", registerRequest.getUsername());

@@ -3,6 +3,7 @@ package pl.kamil.praca.diet.model;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.cglib.core.Local;
 import pl.kamil.praca.diet.dto.FoodItemRequest;
 
 import java.time.LocalDate;
@@ -24,7 +25,11 @@ public class FoodItem {
     private Double protein;
     private Double carbohydrates;
     private Double fat;
-    private LocalDate dateAdded;
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+    @Column(name = "updated_at")
+    private LocalDate updatedAt;
+
 
     public FoodItem(FoodItemRequest foodItemDto) {
         this.id = null;
@@ -33,6 +38,15 @@ public class FoodItem {
         this.protein = foodItemDto.getProtein();
         this.carbohydrates = foodItemDto.getCarbohydrates();
         this.fat = foodItemDto.getFat();
-        this.dateAdded = LocalDate.now();
+    }
+
+    @PrePersist
+    void prePersist() {
+        this.createdAt = LocalDate.now();
+    }
+
+    @PreUpdate
+    void preUpdate() {
+        this.updatedAt = LocalDate.now();
     }
 }
