@@ -30,7 +30,7 @@ public class FoodItemController {
 
     @PostMapping("/add")
     @Transactional
-    public ResponseEntity<?> addFoodItem(Authentication authentication, @RequestBody @Valid FoodItemRequest foodItemRequest) {
+    public ResponseEntity<?>addFoodItem(Authentication authentication, @RequestBody @Valid FoodItemRequest foodItemRequest) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -43,12 +43,12 @@ public class FoodItemController {
         if (meal == null) {
             return ResponseEntity.notFound().build();
         }
-        this.foodItemService.addFoodItem(user, new FoodItem(foodItemRequest), meal);
+        this.foodItemService.addFoodItem(user,new FoodItem(foodItemRequest), meal);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<?> getFoodItem(Authentication authentication, @PathVariable @Valid Long id) {
+    public ResponseEntity<?>getFoodItem(Authentication authentication, @PathVariable @Valid Long id) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -61,7 +61,7 @@ public class FoodItemController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<?> getFoodItems(Authentication authentication) {
+    public ResponseEntity<?>getFoodItems(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -74,7 +74,7 @@ public class FoodItemController {
 
     @PostMapping("/update")
     @Transactional
-    public ResponseEntity<?> updateFoodItem(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
+    public ResponseEntity<?>updateFoodItem(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
