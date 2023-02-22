@@ -89,9 +89,9 @@ public class UserService implements UserDetailsService {
     public Double calculateCaloriesWomen(User user) {
         double caloriesGoal = 655 + (9.6 * user.getWeight()) + (1.8 * user.getHeight()) - (4.7 * user.getAge());
 
-        if (user.getGoal().equals("Schudnąć")) {
+        if (user.getGoal().equals("Redukcja")) {
             return caloriesGoal - 300;
-        } else if (user.getGoal().equals("Zbudować masę")) {
+        } else if (user.getGoal().equals("Masa mięśniowa")) {
             return caloriesGoal + 300;
         } else return caloriesGoal;
     }
