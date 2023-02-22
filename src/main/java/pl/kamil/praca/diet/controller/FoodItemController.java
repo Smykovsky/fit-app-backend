@@ -52,6 +52,8 @@ public class FoodItemController {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
+
+
         final FoodItem foodItem = foodItemService.get(id);
         if (foodItem == null) {
             return ResponseEntity.notFound().build();
@@ -65,9 +67,15 @@ public class FoodItemController {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
+        final User user = this.userService.getUser(authentication.getName());
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
 
-        List<FoodItem> foodItemList = this.foodItemService.getAll();
-        return ResponseEntity.ok(foodItemList);
+        List<FoodItem> foodItems = user.getFoodItemsPerDay();
+
+//        List<FoodItem> foodItemList = this.foodItemService.getAll();
+        return ResponseEntity.ok(foodItems);
 
 
     }
