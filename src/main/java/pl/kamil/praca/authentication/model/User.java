@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @AllArgsConstructor
@@ -109,6 +110,13 @@ public class User {
 
     public UserProgress getUserProgress(Long id) {
         return this.progressList.stream().filter(progress -> progress.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    public List<FoodItem> getFoodItemsPerDay() {
+        return meals.stream()
+                .flatMap(meal -> meal.getFoodItems().stream())
+                .filter(foodItem -> foodItem.getCreatedAt().isEqual(LocalDate.now()))
+                .collect(Collectors.toList());
     }
 
     public Double getEatenCalories() {
