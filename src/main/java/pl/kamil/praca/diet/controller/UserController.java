@@ -74,23 +74,4 @@ public class UserController {
 
             return ResponseEntity.ok(new UserDietViewModel(user));
         }
-
-    @GetMapping("/data")
-    public ResponseEntity<?> getMakros(Authentication authentication) {
-        Map<String, Object> responseMap = new HashMap<>();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            responseMap.put("error", true);
-            responseMap.put("message", "Użytkownik nie jest zautoryzowany!");
-            return ResponseEntity.status(500).body(responseMap);
-        }
-
-        final User user = userService.getUser(authentication.getName());
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(new UserDietViewModel(user));
-    }
-
-
 }
