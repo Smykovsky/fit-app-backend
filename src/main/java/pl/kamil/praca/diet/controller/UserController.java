@@ -9,6 +9,7 @@ import pl.kamil.praca.authentication.service.UserService;
 import pl.kamil.praca.authentication.view.UserDietViewModel;
 import pl.kamil.praca.authentication.view.UserViewModel;
 import pl.kamil.praca.diet.dto.PersonalizeRequest;
+import pl.kamil.praca.diet.model.UserProgress;
 import pl.kamil.praca.diet.service.FoodItemService;
 
 import javax.validation.Valid;
@@ -45,12 +46,16 @@ public class UserController {
         user.setGender(personalizeRequest.getGender());
         user.setGoal(personalizeRequest.getGoal());
 
+        user.addUserProgress(new UserProgress(personalizeRequest.getWeight()));
+
         if (personalizeRequest.getGender().equals(MAN)) {
             user.setCalorieIntakeGoal(userService.calculateCaloriesMan(user));
             userService.saveUser(user);
         } else
             user.setCalorieIntakeGoal(userService.calculateCaloriesWomen(user));
         userService.saveUser(user);
+
+
 
         responseMap.put("error", false);
         responseMap.put("user", user);
