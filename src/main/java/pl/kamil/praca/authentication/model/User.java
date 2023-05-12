@@ -112,6 +112,12 @@ public class User {
         return this.progressList.stream().filter(progress -> progress.getId().equals(id)).findFirst().orElse(null);
     }
 
+    public List<Meal> getMealsPerDay() {
+        return meals.stream()
+                .filter(meal -> meal.getCreatedAt().isEqual(LocalDate.now()))
+                .collect(Collectors.toList());
+    }
+
     public List<FoodItem> getFoodItemsPerDay() {
         return meals.stream()
                 .flatMap(meal -> meal.getFoodItems().stream())

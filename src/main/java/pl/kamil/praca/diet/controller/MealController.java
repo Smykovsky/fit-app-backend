@@ -43,7 +43,7 @@ public class MealController {
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(user.getMeals());
+        return ResponseEntity.ok(user.getMealsPerDay());
     }
 
     @PostMapping("/update")
