@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.praca.diet.dto.RecipeRequest;
+import pl.kamil.praca.diet.model.FoodItem;
 import pl.kamil.praca.diet.model.Recipe;
 import pl.kamil.praca.diet.service.RecipeService;
 
@@ -36,6 +37,20 @@ public class RecipeController {
 
         List<Recipe> recipeList = recipeService.getAll();
         return ResponseEntity.ok(recipeList);
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<?>getFoodItem(Authentication authentication, @PathVariable @Valid Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+        }
+
+        final Recipe recipe = recipeService.getRecipe(id);
+        if (recipe == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(recipe);
     }
 
     @PostMapping("/update")
