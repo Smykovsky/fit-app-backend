@@ -18,6 +18,7 @@ public class Recipe {
     private Long id;
     private String name;
     private String description;
+    @Column(length = 500)
     private String instruction;
     private Double kcal;
     private Double carbohydrates;
