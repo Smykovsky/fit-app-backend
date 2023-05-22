@@ -3,15 +3,20 @@ package pl.kamil.praca.diet.controller;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.service.UserService;
+import pl.kamil.praca.diet.dto.MealByDateRequest;
 import pl.kamil.praca.diet.dto.MealRequest;
+import pl.kamil.praca.diet.model.Meal;
 import pl.kamil.praca.diet.service.MealService;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,6 +49,19 @@ public class MealController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(user.getMealsPerDay());
+    }
+
+    @GetMapping("/getByDate")
+    public ResponseEntity<?> getMealsByDate(Authentication authentication, @RequestBody MealByDateRequest request) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+        }
+        final User user = userService.getUser(authentication.getName());
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Meal> mealsByDate = mealService.findByDate(request.getPickedDate());
+        return ResponseEntity.ok(mealsByDate);
     }
 
     @PostMapping("/update")

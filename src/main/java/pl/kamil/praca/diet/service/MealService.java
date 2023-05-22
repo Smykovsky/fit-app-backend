@@ -16,6 +16,7 @@ import pl.kamil.praca.diet.repository.FoodItemRepository;
 import pl.kamil.praca.diet.repository.MealRepository;
 import pl.kamil.praca.diet.view.MealViewModel;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -84,6 +85,10 @@ public class MealService {
         }
 
         return ResponseEntity.ok(new MealViewModel(meal));
+    }
+
+    public List<Meal> findByDate (LocalDate date) {
+        return mealRepository.findByCreatedAt(date);
     }
 
     public ResponseEntity<?> deleteMeal(String json, Authentication authentication) throws JSONException {
