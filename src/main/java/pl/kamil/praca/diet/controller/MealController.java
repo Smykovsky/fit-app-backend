@@ -51,8 +51,8 @@ public class MealController {
         return ResponseEntity.ok(user.getMealsPerDay());
     }
 
-    @GetMapping("/getByDate")
-    public ResponseEntity<?> getMealsByDate(Authentication authentication, @RequestBody MealByDateRequest request) {
+    @GetMapping("/getByDate/{pickedDate}")
+    public ResponseEntity<?> getMealsByDate(Authentication authentication, @PathVariable LocalDate pickedDate) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -60,7 +60,7 @@ public class MealController {
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        List<Meal> mealsByDate = mealService.findByDate(request.getPickedDate());
+        List<Meal> mealsByDate = mealService.findByDate(pickedDate);
         return ResponseEntity.ok(mealsByDate);
     }
 
