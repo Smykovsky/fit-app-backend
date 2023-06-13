@@ -9,12 +9,14 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.praca.authentication.dto.AuthResponse;
 import pl.kamil.praca.authentication.dto.LoginRequest;
 import pl.kamil.praca.authentication.dto.RefreshTokenRequest;
 import pl.kamil.praca.authentication.dto.RegisterRequest;
 import pl.kamil.praca.authentication.model.RefreshToken;
+import pl.kamil.praca.authentication.model.Role;
 import pl.kamil.praca.authentication.model.Token;
 import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.repository.TokenRepository;
@@ -31,7 +33,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController{
     private final UserService userService;
     private final TokenRepository tokenRepository;
     private final RefreshTokenService refreshTokenService;
@@ -57,6 +59,8 @@ public class AuthController {
             user.setEmail(registerRequest.getEmail());
             user.setUsername(registerRequest.getUsername());
             user.setPassword(registerRequest.getPassword());
+            Role role = userService.findRoleByName("user");
+            user.addRole(role);
             userService.saveUser(user);
             responseMap.put("error", false);
             responseMap.put("username", registerRequest.getUsername());

@@ -78,6 +78,14 @@ public class User {
         return grantedAuthorities;
     }
 
+    public void addRole(Role role) {
+        roles.add(role);
+    }
+
+    public void removeRole(Role role) {
+        roles.remove(role);
+    }
+
     //meals methods
     public void addMeal(Meal meal) {
         this.meals.add(meal);
