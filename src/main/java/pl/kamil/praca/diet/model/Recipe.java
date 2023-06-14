@@ -17,6 +17,7 @@ public class Recipe {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String photoUrl;
     private String description;
     @Column(length = 500)
     private String instruction;
