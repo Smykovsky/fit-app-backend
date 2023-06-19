@@ -126,6 +126,12 @@ public class User {
                 .collect(Collectors.toList());
     }
 
+    public List<Meal> getMealsPerDayByDate(LocalDate date) {
+        return meals.stream()
+                .filter(meal -> meal.getCreatedAt().isEqual(date))
+                .collect(Collectors.toList());
+    }
+
     public List<FoodItem> getFoodItemsPerDay() {
         return meals.stream()
                 .flatMap(meal -> meal.getFoodItems().stream())

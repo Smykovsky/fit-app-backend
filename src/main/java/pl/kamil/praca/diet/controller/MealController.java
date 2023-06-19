@@ -58,7 +58,7 @@ public class MealController {
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        List<Meal> mealsByDate = mealService.findByDate(pickedDate);
+        List<Meal> mealsByDate = mealService.findByDate(user, pickedDate);
         return ResponseEntity.ok(mealsByDate);
     }
 

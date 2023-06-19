@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.kamil.praca.authentication.model.User;
+import pl.kamil.praca.authentication.repository.UserRepository;
 import pl.kamil.praca.authentication.service.UserService;
 import pl.kamil.praca.diet.dto.MealRequest;
 import pl.kamil.praca.diet.model.FoodItem;
@@ -24,6 +25,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class MealService {
+    private final UserRepository userRepository;
     private final MealRepository mealRepository;
     private final FoodItemRepository foodItemRepository;
     private final UserService userService;
@@ -87,8 +89,10 @@ public class MealService {
         return ResponseEntity.ok(new MealViewModel(meal));
     }
 
-    public List<Meal> findByDate (LocalDate date) {
-        return mealRepository.findByCreatedAt(date);
+    public List<Meal> findByDate (User user, LocalDate date) {
+        User byUsername = userRepository.findByUsername(user.getUsername());
+        List<Meal> mealsPerDay = user.getMealsPerDayByDate(date);
+        return mealsPerDay;
     }
 
     public ResponseEntity<?> deleteMeal(String json, Authentication authentication) throws JSONException {
