@@ -10,19 +10,18 @@ import pl.kamil.praca.authentication.view.UserDietViewModel;
 import pl.kamil.praca.authentication.view.UserViewModel;
 import pl.kamil.praca.diet.dto.PersonalizeRequest;
 import pl.kamil.praca.diet.model.UserProgress;
-import pl.kamil.praca.diet.service.FoodItemService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
-    private final FoodItemService foodItemService;
-
 
     @PostMapping("/personalize")
     public ResponseEntity<?> personalizeUser(@RequestBody @Valid PersonalizeRequest personalizeRequest, Authentication authentication) {
@@ -61,6 +60,33 @@ public class UserController {
         responseMap.put("user", user);
         responseMap.put("message", "Pomyślnie spersonalizowano użytkownika :)");
         return ResponseEntity.ok(responseMap);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getUsersList(Authentication authentication) {
+        Map<String, Object> responseMap = new HashMap<>();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            responseMap.put("error", true);
+            responseMap.put("message", "Użytkownik nie jest zautoryzowany!");
+            return ResponseEntity.status(500).body(responseMap);
+        }
+
+        boolean isAdmin = false;
+        final User user = userService.getUser(authentication.getName());
+        List<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toList());
+        for (String value : roles) {
+            if (value.equals("admin")) {
+                isAdmin = true;
+                break;
+            }
+        }
+
+        if (!isAdmin) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<UserViewModel> usersList = userService.getUsers().stream().map(UserViewModel::new).toList();
+        return ResponseEntity.ok(usersList);
     }
 
         @GetMapping("/data")
