@@ -40,7 +40,6 @@ public class AuthController{
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
-
     @PostMapping("/register")
     @Transactional
     public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest registerRequest) {
@@ -67,15 +66,15 @@ public class AuthController{
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequest login) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
         Map<String, Object> responseMap = new HashMap<>();
-        final User user = userService.getUser(login.getUsername());
+        final User user = userService.getUser(loginRequest.getUsername());
         if (user == null) {
             responseMap.put("message", "Brak takiego użytkownika");
             return ResponseEntity.status(401).body(responseMap);
         }
         try {
-            Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
+            Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
             if (auth.isAuthenticated()) {
                 UserDetails userDetails = userService.getUserDetails(user);
                 if (userDetails == null) {
