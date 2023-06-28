@@ -1,7 +1,6 @@
 package pl.kamil.praca.diet.model;
 
-import jakarta.annotation.Nullable;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 import org.springframework.cglib.core.Local;
 import pl.kamil.praca.diet.dto.FoodItemRequest;

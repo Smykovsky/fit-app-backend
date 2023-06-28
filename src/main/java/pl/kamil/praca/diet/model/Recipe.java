@@ -1,13 +1,11 @@
 package pl.kamil.praca.diet.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.kamil.praca.diet.dto.RecipeRequest;
-
-import java.util.List;
 
 @Entity
 @Table(name = "recipes")

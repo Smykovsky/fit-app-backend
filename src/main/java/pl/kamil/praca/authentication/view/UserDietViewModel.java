@@ -1,10 +1,7 @@
 package pl.kamil.praca.authentication.view;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import pl.kamil.praca.authentication.model.User;
-import pl.kamil.praca.authentication.service.UserService;
-import pl.kamil.praca.diet.model.FoodItem;
 import pl.kamil.praca.diet.model.Meal;
 
 import java.time.LocalDate;

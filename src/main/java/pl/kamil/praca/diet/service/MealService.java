@@ -11,9 +11,7 @@ import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.repository.UserRepository;
 import pl.kamil.praca.authentication.service.UserService;
 import pl.kamil.praca.diet.dto.MealRequest;
-import pl.kamil.praca.diet.model.FoodItem;
 import pl.kamil.praca.diet.model.Meal;
-import pl.kamil.praca.diet.repository.FoodItemRepository;
 import pl.kamil.praca.diet.repository.MealRepository;
 import pl.kamil.praca.diet.view.MealViewModel;
 
@@ -27,7 +25,6 @@ import java.util.List;
 public class MealService {
     private final UserRepository userRepository;
     private final MealRepository mealRepository;
-    private final FoodItemRepository foodItemRepository;
     private final UserService userService;
 
     public void save(Meal meal) {

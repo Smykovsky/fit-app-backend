@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.praca.diet.dto.RecipeRequest;
-import pl.kamil.praca.diet.model.FoodItem;
 import pl.kamil.praca.diet.model.Recipe;
 import pl.kamil.praca.diet.service.RecipeService;
 

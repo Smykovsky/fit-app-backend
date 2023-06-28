@@ -10,6 +10,7 @@ spring:
           auth: true
           starttls:
             enable: true
+            required: true
   datasource:
     url: jdbc:mysql://localhost:3306/kamil?useSSL=false&serverTimezone=Europe/Warsaw
     driver-class-name: com.mysql.cj.jdbc.Driver

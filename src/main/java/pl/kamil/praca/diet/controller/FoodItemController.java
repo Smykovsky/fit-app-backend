@@ -1,6 +1,6 @@
 package pl.kamil.praca.diet.controller;
 
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -13,9 +13,7 @@ import pl.kamil.praca.authentication.service.UserService;
 import pl.kamil.praca.diet.dto.FoodItemRequest;
 import pl.kamil.praca.diet.model.FoodItem;
 import pl.kamil.praca.diet.model.Meal;
-import pl.kamil.praca.diet.repository.MealRepository;
 import pl.kamil.praca.diet.service.FoodItemService;
-import pl.kamil.praca.diet.service.MealService;
 
 import javax.validation.Valid;
 import java.util.List;

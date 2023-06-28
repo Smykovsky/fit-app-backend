@@ -2,14 +2,7 @@ package pl.kamil.praca.authentication.security.JWT;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Security;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -23,6 +16,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import pl.kamil.praca.authentication.model.Token;
 import pl.kamil.praca.authentication.repository.TokenRepository;
 import pl.kamil.praca.authentication.service.UserService;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;

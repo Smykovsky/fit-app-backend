@@ -1,8 +1,7 @@
 package pl.kamil.praca.diet.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
-import pl.kamil.praca.diet.dto.UserProgressRequest;
 
 import java.time.LocalDate;
 

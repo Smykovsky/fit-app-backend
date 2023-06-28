@@ -6,9 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.service.UserService;
-import pl.kamil.praca.diet.dto.MealRequest;
 import pl.kamil.praca.diet.dto.UserProgressRequest;
-import pl.kamil.praca.diet.model.Meal;
 import pl.kamil.praca.diet.model.UserProgress;
 import pl.kamil.praca.diet.repository.UserProgressRepository;
 

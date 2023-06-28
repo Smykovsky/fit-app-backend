@@ -8,7 +8,6 @@ import pl.kamil.praca.diet.model.Recipe;
 import pl.kamil.praca.diet.repository.RecipeRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

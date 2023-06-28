@@ -30,7 +30,6 @@ public class UserController {
         final String WOMEN = "Kobieta";
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            responseMap.put("error", true);
             responseMap.put("message", "Użytkownik nie jest zautoryzowany!");
             return ResponseEntity.status(500).body(responseMap);
         }
@@ -54,9 +53,6 @@ public class UserController {
             user.setCalorieIntakeGoal(userService.calculateCaloriesWomen(user));
         userService.saveUser(user);
 
-
-
-        responseMap.put("error", false);
         responseMap.put("user", user);
         responseMap.put("message", "Pomyślnie spersonalizowano użytkownika :)");
         return ResponseEntity.ok(responseMap);
@@ -66,7 +62,6 @@ public class UserController {
     public ResponseEntity<?> getUsersList(Authentication authentication) {
         Map<String, Object> responseMap = new HashMap<>();
         if (authentication == null || !authentication.isAuthenticated()) {
-            responseMap.put("error", true);
             responseMap.put("message", "Użytkownik nie jest zautoryzowany!");
             return ResponseEntity.status(500).body(responseMap);
         }
@@ -93,7 +88,6 @@ public class UserController {
         public ResponseEntity<?> getUserData(Authentication authentication) {
             Map<String, Object> responseMap = new HashMap<>();
             if (authentication == null || !authentication.isAuthenticated()) {
-                responseMap.put("error", true);
                 responseMap.put("message", "Użytkownik nie jest zautoryzowany!");
                 return ResponseEntity.status(500).body(responseMap);
             }

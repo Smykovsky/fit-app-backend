@@ -1,8 +1,8 @@
 package pl.kamil.praca.diet.dto;
 
-import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.lang.Nullable;
 
 
 @AllArgsConstructor

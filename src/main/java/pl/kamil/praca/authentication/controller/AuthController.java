@@ -1,6 +1,6 @@
 package pl.kamil.praca.authentication.controller;
 
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +10,8 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import pl.kamil.praca.authentication.dto.AuthResponse;
 import pl.kamil.praca.authentication.dto.LoginRequest;
 import pl.kamil.praca.authentication.dto.RefreshTokenRequest;
 import pl.kamil.praca.authentication.dto.RegisterRequest;
@@ -27,7 +25,6 @@ import pl.kamil.praca.authentication.service.RefreshTokenService;
 import pl.kamil.praca.authentication.service.UserService;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,11 +47,9 @@ public class AuthController{
         Map<String, Object> responseMap = new HashMap<>();
 
         if (!registerRequest.getPassword().equals(registerRequest.getPassword_confirmed())) {
-            responseMap.put("error", true);
             responseMap.put("message", "Hasła muszą być takie same!");
             return ResponseEntity.status(401).body(responseMap);
         } else if (userService.existsByUsernameOrEmail(registerRequest.getUsername(), registerRequest.getEmail())) {
-            responseMap.put("error", true);
             responseMap.put("message", "Taki użytkownik już istnieje! Wprowadź inną nazwę użytkownika lub email!");
             return ResponseEntity.status(401).body(responseMap);
         } else {
@@ -65,7 +60,6 @@ public class AuthController{
             Role role = userService.findRoleByName("user");
             user.addRole(role);
             userService.saveUser(user);
-            responseMap.put("error", false);
             responseMap.put("username", registerRequest.getUsername());
             responseMap.put("message", "Konto zostało pomyślnie zalożone");
             return ResponseEntity.ok(responseMap);
@@ -77,8 +71,7 @@ public class AuthController{
         Map<String, Object> responseMap = new HashMap<>();
         final User user = userService.getUser(login.getUsername());
         if (user == null) {
-            responseMap.put("error", true);
-            responseMap.put("message", "Nieodnaleziono takiego użytkownika!");
+            responseMap.put("message", "Brak takiego użytkownika");
             return ResponseEntity.status(401).body(responseMap);
         }
         try {
@@ -86,35 +79,29 @@ public class AuthController{
             if (auth.isAuthenticated()) {
                 UserDetails userDetails = userService.getUserDetails(user);
                 if (userDetails == null) {
-                    responseMap.put("error", true);
-                    responseMap.put("message", "Nieodnaleziono takiego użytkownika![2]");
+                    responseMap.put("message", "Brak takiego użytkownika");
                     return ResponseEntity.status(401).body(responseMap);
                 }
                 String token = jwtUtil.buildJwt(userDetails);
                 tokenRepository.save(new Token(null, token, user.getUsername()));
                 final RefreshToken refreshToken = this.refreshTokenService.createRefreshToken(user.getUsername());
-                responseMap.put("error", false);
-                responseMap.put("message", "Pomyślnie zalogowano");
+                responseMap.put("message", "Zalogowano");
                 responseMap.put("access_token", token);
                 responseMap.put("refresh_token", refreshToken.getToken());
                 return ResponseEntity.ok(responseMap);
             } else {
-                responseMap.put("error", true);
-                responseMap.put("message", "Hasło lub login są niepoprawne");
+                responseMap.put("message", "Błędne hasło lub login");
                 return ResponseEntity.status(401).body(responseMap);
             }
         } catch (DisabledException e) {
-            responseMap.put("error", true);
-            responseMap.put("message", "User is disabled");
+            responseMap.put("message", "Użytkownik zablokowany");
             e.printStackTrace();
             return ResponseEntity.status(500).body(responseMap);
         } catch (BadCredentialsException e) {
-            responseMap.put("error", true);
-            responseMap.put("message", "Hasło lub login są niepoprawne");
+            responseMap.put("message", "Błędne hasło lub login");
             return ResponseEntity.status(401).body(responseMap);
         } catch (Exception e) {
-            responseMap.put("error", true);
-            responseMap.put("message", "Coś poszło nie tak!");
+            responseMap.put("message", "Błąd");
             return ResponseEntity.status(500).body(responseMap);
         }
     }
@@ -129,7 +116,6 @@ public class AuthController{
         }
 
         Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("error", false);
         responseMap.put("user", user);
         return ResponseEntity.ok().body(responseMap);
     }
@@ -147,7 +133,6 @@ public class AuthController{
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        responseMap.put("error", false);
         responseMap.put("message", "Wylogowano!");
         return ResponseEntity.ok().body(responseMap);
     }
@@ -164,13 +149,11 @@ public class AuthController{
                     final var user = this.userService.getUserDetails(username);
                     final String token = jwtUtil.buildJwt(user);
                     this.tokenRepository.save(new Token(null, token, username));
-                    responseMap.put("error", false);
                     responseMap.put("access_token", token);
                     responseMap.put("refresh_token", requestRefreshToken);
                     return ResponseEntity.ok(responseMap);
                 })
                 .orElseGet(() -> {
-                    responseMap.put("error", true);
                     responseMap.put("message", "RefreshToken wygasł lub nie istnieje!");
                     return ResponseEntity.status(500).body(responseMap);
                 });

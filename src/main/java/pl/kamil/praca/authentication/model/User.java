@@ -1,9 +1,8 @@
 package pl.kamil.praca.authentication.model;
 
-import jakarta.annotation.Nullable;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.kamil.praca.diet.model.FoodItem;
@@ -11,7 +10,6 @@ import pl.kamil.praca.diet.model.Meal;
 import pl.kamil.praca.diet.model.UserProgress;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

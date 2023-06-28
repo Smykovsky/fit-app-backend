@@ -1,8 +1,8 @@
 package pl.kamil.praca.diet.dto;
 
-import jakarta.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 @Getter @Setter
 public class RecipeRequest {
