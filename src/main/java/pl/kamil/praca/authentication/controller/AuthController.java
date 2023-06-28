@@ -8,8 +8,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.praca.authentication.dto.AuthResponse;
 import pl.kamil.praca.authentication.dto.LoginRequest;
@@ -37,8 +39,9 @@ public class AuthController{
     private final UserService userService;
     private final TokenRepository tokenRepository;
     private final RefreshTokenService refreshTokenService;
-    //    private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
 
     @PostMapping("/register")
@@ -58,7 +61,7 @@ public class AuthController{
             User user = new User();
             user.setEmail(registerRequest.getEmail());
             user.setUsername(registerRequest.getUsername());
-            user.setPassword(registerRequest.getPassword());
+            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             Role role = userService.findRoleByName("user");
             user.addRole(role);
             userService.saveUser(user);
@@ -70,49 +73,49 @@ public class AuthController{
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest login) {
         Map<String, Object> responseMap = new HashMap<>();
-
-        final User user = userService.getUser(loginRequest.getUsername());
-
+        final User user = userService.getUser(login.getUsername());
         if (user == null) {
             responseMap.put("error", true);
-            responseMap.put("message", "Brak takiego użytkownika w bazie!");
+            responseMap.put("message", "Nieodnaleziono takiego użytkownika!");
             return ResponseEntity.status(401).body(responseMap);
         }
-
         try {
-            UserDetails userDetails = userService.getUserDetails(user);
-
-            if (userDetails == null) {
+            Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
+            if (auth.isAuthenticated()) {
+                UserDetails userDetails = userService.getUserDetails(user);
+                if (userDetails == null) {
+                    responseMap.put("error", true);
+                    responseMap.put("message", "Nieodnaleziono takiego użytkownika![2]");
+                    return ResponseEntity.status(401).body(responseMap);
+                }
+                String token = jwtUtil.buildJwt(userDetails);
+                tokenRepository.save(new Token(null, token, user.getUsername()));
+                final RefreshToken refreshToken = this.refreshTokenService.createRefreshToken(user.getUsername());
+                responseMap.put("error", false);
+                responseMap.put("message", "Pomyślnie zalogowano");
+                responseMap.put("access_token", token);
+                responseMap.put("refresh_token", refreshToken.getToken());
+                return ResponseEntity.ok(responseMap);
+            } else {
                 responseMap.put("error", true);
-                responseMap.put("message", "Brak takiego użytkownika w bazie!");
+                responseMap.put("message", "Hasło lub login są niepoprawne");
                 return ResponseEntity.status(401).body(responseMap);
             }
-
-            String token = jwtUtil.buildJwt(userDetails);
-
-            tokenRepository.save(new Token(null, token, user.getUsername()));
-            final RefreshToken refreshToken = this.refreshTokenService.createRefreshToken(user.getUsername());
-
-            responseMap.put("error", false);
-            responseMap.put("message", "Zalogowano! :)");
-            responseMap.put("access_token", token);
-            responseMap.put("refresh_token", refreshToken.getToken());
-            return ResponseEntity.ok(responseMap);
-
         } catch (DisabledException e) {
             responseMap.put("error", true);
-            responseMap.put("message", "User disabled");
+            responseMap.put("message", "User is disabled");
+            e.printStackTrace();
             return ResponseEntity.status(500).body(responseMap);
         } catch (BadCredentialsException e) {
             responseMap.put("error", true);
-            responseMap.put("message", "Nieprawidłowe poświadczenia! Spróbuj ponownie.");
+            responseMap.put("message", "Hasło lub login są niepoprawne");
             return ResponseEntity.status(401).body(responseMap);
         } catch (Exception e) {
             responseMap.put("error", true);
-            responseMap.put("message", "Błąd. Wróć później! Przepraszamy.");
-            return ResponseEntity.status(401).body(responseMap);
+            responseMap.put("message", "Coś poszło nie tak!");
+            return ResponseEntity.status(500).body(responseMap);
         }
     }
 

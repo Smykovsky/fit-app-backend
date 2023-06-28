@@ -8,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Getter
-@Setter
 public class LoginRequest {
     @NotBlank(message = "Podaj nazwę użytkownika!")
     private String username;
