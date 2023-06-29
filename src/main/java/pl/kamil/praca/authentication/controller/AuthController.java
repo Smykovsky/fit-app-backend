@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.praca.authentication.dto.LoginRequest;
+import pl.kamil.praca.authentication.dto.NewPasswordRequest;
 import pl.kamil.praca.authentication.dto.RefreshTokenRequest;
 import pl.kamil.praca.authentication.dto.RegisterRequest;
 import pl.kamil.praca.authentication.model.RefreshToken;
@@ -156,5 +157,19 @@ public class AuthController{
                     responseMap.put("message", "RefreshToken wygasł lub nie istnieje!");
                     return ResponseEntity.status(500).body(responseMap);
                 });
+    }
+
+    @PostMapping("/changePasswordIfForgot")
+    public ResponseEntity<?> changePasswordIfForgot(NewPasswordRequest newPasswordRequest) {
+        Map<String, Object> responseMap = new HashMap<>();
+        final User user = userService.getUser(newPasswordRequest.getUsername());
+        if (user == null) {
+            responseMap.put("message", "Nieodnaleziono takiego użytkownika!");
+            return ResponseEntity.status(401).body(responseMap);
+        }
+        user.setPassword(passwordEncoder.encode(newPasswordRequest.getNewPassword()));
+        userService.saveUser(user);
+        responseMap.put("message", "Hasło zostało zmienione!");
+        return ResponseEntity.ok(responseMap);
     }
 }
