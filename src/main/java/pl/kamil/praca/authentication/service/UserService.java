@@ -3,6 +3,8 @@ package pl.kamil.praca.authentication.service;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +17,7 @@ import pl.kamil.praca.authentication.repository.RoleRepository;
 import pl.kamil.praca.authentication.repository.UserRepository;
 import pl.kamil.praca.diet.model.Meal;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -26,6 +29,7 @@ import java.util.List;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final JavaMailSender javaMailSender;
 
 
     @Override
@@ -86,6 +90,30 @@ public class UserService implements UserDetailsService {
         } else if (user.getGoal().equals("Zbudować masę")) {
             return caloriesGoal + 300;
         } else return caloriesGoal;
+    }
+
+    public String randomPasswordGenerator() {
+        final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder builder = new StringBuilder(10);
+
+        for (int i = 0; i < 10; i++) {
+            int randomIndex = random.nextInt(CHARACTERS.length());
+            char randomChar = CHARACTERS.charAt(randomIndex);
+            builder.append(randomChar);
+        }
+
+        return builder.toString();
+    }
+
+    public void sendEmail(String email, String newPassword) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("ksmyk.dev2000@gmail.com");
+        message.setTo(email);
+        message.setText(newPassword);
+        message.setSubject("New password");
+        javaMailSender.send(message);
+        System.out.println("Wysłano maila!");
     }
 
     public Double calculateCaloriesWomen(User user) {

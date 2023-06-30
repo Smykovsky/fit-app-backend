@@ -4,6 +4,7 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -12,10 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import pl.kamil.praca.authentication.dto.LoginRequest;
-import pl.kamil.praca.authentication.dto.NewPasswordRequest;
-import pl.kamil.praca.authentication.dto.RefreshTokenRequest;
-import pl.kamil.praca.authentication.dto.RegisterRequest;
+import pl.kamil.praca.authentication.dto.*;
 import pl.kamil.praca.authentication.model.RefreshToken;
 import pl.kamil.praca.authentication.model.Role;
 import pl.kamil.praca.authentication.model.Token;
@@ -159,17 +157,43 @@ public class AuthController{
                 });
     }
 
-    @PostMapping("/changePasswordIfForgot")
-    public ResponseEntity<?> changePasswordIfForgot(NewPasswordRequest newPasswordRequest) {
+    @PostMapping("/changePassword")
+    public ResponseEntity<?> changePassword(Authentication authentication, @RequestBody NewPasswordRequest newPasswordRequest) {
         Map<String, Object> responseMap = new HashMap<>();
-        final User user = userService.getUser(newPasswordRequest.getUsername());
+        final User user = userService.getUser(authentication.getName());
         if (user == null) {
             responseMap.put("message", "Nieodnaleziono takiego użytkownika!");
             return ResponseEntity.status(401).body(responseMap);
         }
+        if (!passwordEncoder.matches(newPasswordRequest.getOldPassword(), user.getPassword())) {
+            responseMap.put("message", "Stare hasło jest błędne!");
+            System.out.println(passwordEncoder.matches(newPasswordRequest.getOldPassword(), user.getPassword()));
+            return ResponseEntity.status(401).body(responseMap);
+        }
+
+        if (!newPasswordRequest.getNewPassword().equals(newPasswordRequest.getNewPasswordConfirmed())) {
+            responseMap.put("message", "Hasła się nie zgadzają!");
+        }
+
         user.setPassword(passwordEncoder.encode(newPasswordRequest.getNewPassword()));
         userService.saveUser(user);
         responseMap.put("message", "Hasło zostało zmienione!");
+        return ResponseEntity.ok(responseMap);
+    }
+
+    @PostMapping("/passwordRecovery")
+    public ResponseEntity<?> passwordRecovery (@RequestBody PasswordRecoveryRequest passwordRecoveryRequest) {
+        Map<String, Object> responseMap = new HashMap<>();
+        final User user = userService.getUser(passwordRecoveryRequest.getUsername(), passwordRecoveryRequest.getEmail());
+        if (user == null) {
+            responseMap.put("message", "Nieodnaleziono takiego użytkownika!");
+            return ResponseEntity.status(401).body(responseMap);
+        }
+        String randomPassword = userService.randomPasswordGenerator();
+        user.setPassword(passwordEncoder.encode(randomPassword));
+        userService.saveUser(user);
+        userService.sendEmail(passwordRecoveryRequest.getEmail(), randomPassword);
+        responseMap.put("message", "Wysłano !");
         return ResponseEntity.ok(responseMap);
     }
 }
