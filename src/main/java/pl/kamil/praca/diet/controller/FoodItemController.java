@@ -28,7 +28,7 @@ public class FoodItemController {
 
     @PostMapping("/add")
     @Transactional
-    public ResponseEntity<?>addFoodItem(Authentication authentication, @RequestBody @Valid FoodItemRequest foodItemRequest) {
+    public ResponseEntity<?>addFoodItem(Authentication authentication, @RequestBody FoodItemRequest foodItemRequest) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
