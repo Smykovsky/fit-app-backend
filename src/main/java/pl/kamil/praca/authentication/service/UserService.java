@@ -137,8 +137,6 @@ public class UserService implements UserDetailsService {
                 .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
 
-        double x;
-
         return calories;
     }
 }

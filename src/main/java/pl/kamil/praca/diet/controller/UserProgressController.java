@@ -35,6 +35,15 @@ public class UserProgressController {
 
         this.userProgressService.addUserProgress(authentication.getName(), userProgressRequest);
         user.setWeight(userProgressRequest.getNewWeight());
+
+        if (user.getGender().equals("Kobieta")) {
+            Double caloriesWomen = userService.calculateCaloriesWomen(user);
+            user.setCalorieIntakeGoal(caloriesWomen);
+        } else {
+            Double caloriesMan = userService.calculateCaloriesMan(user);
+            user.setCalorieIntakeGoal(caloriesMan);
+        }
+
         userService.saveUser(user);
         return ResponseEntity.noContent().build();
     }
