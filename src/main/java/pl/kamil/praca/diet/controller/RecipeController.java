@@ -6,6 +6,7 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pl.kamil.praca.diet.dto.RecipeRequest;
 import pl.kamil.praca.diet.model.Recipe;
 import pl.kamil.praca.diet.service.RecipeService;
@@ -26,6 +27,18 @@ public class RecipeController {
         }
         this.recipeService.addRecipe(new Recipe(recipeRequest));
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/image/{id}")
+    public ResponseEntity<?> setImage(Authentication authentication, @RequestParam("photoUrl") MultipartFile file, @PathVariable Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+        }
+
+        Recipe recipe = recipeService.getRecipe(id);
+        recipe.setPhotoUrl(file.getOriginalFilename());
+        recipeService.save(recipe);
+        return ResponseEntity.ok("Dodano!");
     }
 
     @GetMapping("/get")
