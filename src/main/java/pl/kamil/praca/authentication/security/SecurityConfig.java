@@ -19,6 +19,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pl.kamil.praca.authentication.security.JWT.JwtAuthFilter;
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -45,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable();
-        httpSecurity.cors().configurationSource(corsConfigurationSource()).and().csrf().disable().authorizeRequests().antMatchers("/auth/*").permitAll().anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+        httpSecurity.cors().configurationSource(corsConfigurationSource()).and().csrf().disable().authorizeHttpRequests().antMatchers("/auth/*").permitAll().antMatchers("/admin/**").hasAuthority("admin").anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
             response.setStatus(401);
             response.setHeader("content-type", "application/json");
         }).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
