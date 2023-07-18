@@ -21,6 +21,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -48,6 +49,9 @@ public class UserService implements UserDetailsService {
 
     public User getUser(String username) {
         return userRepository.findByUsername(username);
+    }
+    public Optional<User> getUser(Long id) {
+        return userRepository.findById(id);
     }
 
     public User getUser(String username, String email) {
