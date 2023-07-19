@@ -1,6 +1,8 @@
 package pl.kamil.praca.authentication.controller;
 
 import javax.transaction.Transactional;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

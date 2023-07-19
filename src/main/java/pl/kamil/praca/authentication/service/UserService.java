@@ -114,10 +114,9 @@ public class UserService implements UserDetailsService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("ksmyk.dev2000@gmail.com");
         message.setTo(email);
-        message.setText(newPassword);
+        message.setText("Hasło zostało zmienione! Nowe hasło to: " + newPassword);
         message.setSubject("New password");
         javaMailSender.send(message);
-        System.out.println("Wysłano maila!");
     }
 
     public Double calculateCaloriesWomen(User user) {
