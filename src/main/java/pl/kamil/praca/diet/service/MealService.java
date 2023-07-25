@@ -87,7 +87,6 @@ public class MealService {
     }
 
     public List<Meal> findByDate (User user, LocalDate date) {
-        User byUsername = userRepository.findByUsername(user.getUsername());
         List<Meal> mealsPerDay = user.getMealsPerDayByDate(date);
         return mealsPerDay;
     }
