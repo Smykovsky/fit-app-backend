@@ -3,8 +3,9 @@ package pl.kamil.praca.diet.controller;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -108,9 +109,9 @@ public class FoodItemController {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
 
-        final JSONObject jsonObject = new JSONObject(json);
-        final long mealId = jsonObject.getLong("mealId");
-        final long itemId = jsonObject.getLong("itemId");
+        final JSONObject object = new JSONObject(json);
+        final long mealId = object.getLong("mealId");
+        final long itemId = object.getLong("itemId");
 
         this.foodItemService.delete(mealId, itemId);
         return ResponseEntity.noContent().build();

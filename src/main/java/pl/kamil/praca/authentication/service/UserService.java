@@ -26,12 +26,16 @@ import java.util.Optional;
 @Service
 @Transactional
 @Slf4j
-@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final JavaMailSender javaMailSender;
 
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, JavaMailSender javaMailSender) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.javaMailSender = javaMailSender;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

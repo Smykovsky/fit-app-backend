@@ -1,3 +1,17 @@
 spring:
   profiles:
-    active: 'dev'
+    active: 'prod'
+  main:
+    banner-mode: 'off'
+server:
+  error:
+    include-message: always
+logging:
+  logback:
+    rollingpolicy:
+      file-name-pattern: ${logging.file.path}/pracaInz-%d{yyyy-MM-dd}.%i.log
+      max-history: 50
+      max-file-size: 500MB
+  file:
+    path: ./logs
+    name: ${logging.file.path}/prazaInz.log
