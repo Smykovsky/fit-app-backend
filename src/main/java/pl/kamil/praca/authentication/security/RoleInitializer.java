@@ -25,6 +25,8 @@ public class RoleInitializer implements CommandLineRunner {
             roleRepository.save(userRole);
             Role adminRole = new Role("admin");
             roleRepository.save(adminRole);
+            Role modRole = new Role("mod");
+            roleRepository.save(modRole);
         } else {
            return;
         }

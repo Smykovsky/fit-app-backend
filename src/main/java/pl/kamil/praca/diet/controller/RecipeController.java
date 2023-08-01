@@ -102,6 +102,7 @@ public class RecipeController {
         }
 
         recipeToSave.setName(recipeRequest.getName());
+        recipeToSave.setInstruction(recipeRequest.getInstruction());
         recipeToSave.setDescription(recipeRequest.getDescription());
         recipeToSave.setKcal(recipeRequest.getKcal());
         recipeToSave.setCarbohydrates(recipeRequest.getCarbohydrates());
