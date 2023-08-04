@@ -1,8 +1,20 @@
 spring:
   profiles:
-    active: 'prod'
+    active: 'dev'
   main:
     banner-mode: 'off'
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ksmyk.dev2000@gmail.com
+    password: umijnrbhxagjqlmd
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 server:
   error:
     include-message: always
