@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.service.UserService;
+import pl.kamil.praca.diet.dto.ShoppingItemRequest;
 import pl.kamil.praca.diet.model.ShoppingItem;
 import pl.kamil.praca.diet.service.ShoppingItemService;
 
@@ -19,7 +20,7 @@ public class ShoppingItemController {
     private final UserService userService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addShoppingItem(Authentication authentication, @RequestBody String name) {
+    public ResponseEntity<?> addShoppingItem(Authentication authentication, @RequestBody ShoppingItemRequest request) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
@@ -27,7 +28,7 @@ public class ShoppingItemController {
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        return this.shoppingItemService.addShoppingItem(authentication.getName(), name);
+        return this.shoppingItemService.addShoppingItem(authentication.getName(), request);
     }
 
     @GetMapping("/get")
@@ -54,5 +55,20 @@ public class ShoppingItemController {
         }
         ShoppingItem byId = this.shoppingItemService.getById(id);
         return ResponseEntity.ok(byId);
+    }
+    @PostMapping("/edit/{id}")
+    public ResponseEntity<?> editShoppingItemById(Authentication authentication, @PathVariable("id") Long id, @RequestBody ShoppingItemRequest request) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+        }
+        final User user = userService.getUser(authentication.getName());
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ShoppingItem byId = this.shoppingItemService.getById(id);
+        byId.setName(request.getName());
+        shoppingItemService.save(byId);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.service.UserService;
+import pl.kamil.praca.diet.dto.ShoppingItemRequest;
 import pl.kamil.praca.diet.model.ShoppingItem;
 import pl.kamil.praca.diet.repository.ShoppingItemRepository;
 
@@ -28,13 +29,13 @@ public class ShoppingItemService {
         return this.shoppingItemRepository.findAll();
     }
 
-    public ResponseEntity<?> addShoppingItem(final String username, final String itemName) {
+    public ResponseEntity<?> addShoppingItem(final String username, ShoppingItemRequest request) {
         final User user = userService.getUser(username);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
 
-        ShoppingItem shoppingItem = new ShoppingItem(itemName);
+        ShoppingItem shoppingItem = new ShoppingItem(request);
         user.addShoppingItem(shoppingItem);
         userService.saveUser(user);
         return ResponseEntity.noContent().build();
