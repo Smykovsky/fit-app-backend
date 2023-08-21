@@ -41,7 +41,8 @@ public class RecipeController {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
         }
-        String path = "C:\\Users\\Smyku\\Desktop\\praca\\praca-frontend\\static\\images";
+//        String path = "C:\\Users\\Smyku\\Desktop\\praca\\praca-frontend\\static\\images";
+        String path = "C:\\java\\praca-frontend\\static\\images";
 
         try {
             Path uploadPath = Paths.get(path);

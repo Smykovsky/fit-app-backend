@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.kamil.praca.diet.model.FoodItem;
 import pl.kamil.praca.diet.model.Meal;
+import pl.kamil.praca.diet.model.ShoppingItem;
 import pl.kamil.praca.diet.model.UserProgress;
 
 import java.time.LocalDate;
@@ -59,6 +60,8 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserProgress> progressList; // user's progress list
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ShoppingItem> shoppingList;
 
     @PrePersist
     void prePersist() {
@@ -163,5 +166,17 @@ public class User {
                 .map(Meal::getFoodItems)
                 .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getCreatedAt().isEqual(LocalDate.now())).map(foodItem -> foodItem.getFat()).reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
+    }
+
+    public void addShoppingItem(ShoppingItem item) {
+        this.shoppingList.add(item);
+    }
+
+    public void removeShoppingItem(ShoppingItem item) {
+        this.shoppingList.remove(item);
+    }
+
+    public List<ShoppingItem> getShoppingItemList() {
+        return shoppingList;
     }
 }
