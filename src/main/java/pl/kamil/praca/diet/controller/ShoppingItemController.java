@@ -95,6 +95,6 @@ public class ShoppingItemController {
             return ResponseEntity.notFound().build();
         }
         shoppingItemService.deleteShoppingItem(id);
-        ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 }
