@@ -7,6 +7,7 @@ import pl.kamil.praca.authentication.model.User;
 import pl.kamil.praca.authentication.service.UserService;
 import pl.kamil.praca.diet.dto.ShoppingItemRequest;
 import pl.kamil.praca.diet.model.ShoppingItem;
+import pl.kamil.praca.diet.model.ShoppingItemStatus;
 import pl.kamil.praca.diet.repository.ShoppingItemRepository;
 
 import java.util.List;
@@ -59,5 +60,13 @@ public class ShoppingItemService {
     public void deleteShoppingItem(Long id) {
         ShoppingItem deletedItem = this.getById(id);
         this.shoppingItemRepository.delete(deletedItem);
+    }
+
+    public void setStatus(Long id) {
+        ShoppingItem byId = this.getById(id);
+        if (byId.getStatus().equals(ShoppingItemStatus.UNCHECKED)) {
+            byId.setStatus(ShoppingItemStatus.CHECKED);
+        } else byId.setStatus(ShoppingItemStatus.UNCHECKED);
+        this.shoppingItemRepository.save(byId);
     }
 }

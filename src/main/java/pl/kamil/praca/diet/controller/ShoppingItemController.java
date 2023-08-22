@@ -71,4 +71,30 @@ public class ShoppingItemController {
         shoppingItemService.save(byId);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/set/status/{id}")
+    public ResponseEntity<?> setStatus(Authentication authentication, @PathVariable("id") Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+        }
+        final User user = userService.getUser(authentication.getName());
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        shoppingItemService.setStatus(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<?> delete(Authentication authentication, @PathVariable("id") Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+        }
+        final User user = userService.getUser(authentication.getName());
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        shoppingItemService.deleteShoppingItem(id);
+        ResponseEntity.noContent().build();
+    }
 }
