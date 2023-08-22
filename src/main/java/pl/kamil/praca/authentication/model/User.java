@@ -175,6 +175,9 @@ public class User {
     public void removeShoppingItem(ShoppingItem item) {
         this.shoppingList.remove(item);
     }
+    public void removeAllShoppingItems() {
+        this.shoppingList.clear();
+    }
 
     public List<ShoppingItem> getShoppingItemList() {
         return shoppingList;

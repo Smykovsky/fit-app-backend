@@ -57,9 +57,18 @@ public class ShoppingItemService {
         return ResponseEntity.noContent().build();
     }
 
-    public void deleteShoppingItem(Long id) {
+    public void deleteShoppingItem(User user, Long id) {
         ShoppingItem deletedItem = this.getById(id);
-        this.shoppingItemRepository.delete(deletedItem);
+        if (deletedItem == null) {
+            return;
+        }
+        user.removeShoppingItem(deletedItem);
+        userService.saveUser(user);
+    }
+
+    public void deleteAllShoppingItems(User user) {
+        user.removeAllShoppingItems();
+        userService.saveUser(user);
     }
 
     public void setStatus(Long id) {
