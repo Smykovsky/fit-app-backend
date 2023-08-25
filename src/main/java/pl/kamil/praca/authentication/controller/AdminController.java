@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 @PreAuthorize("hasAuthority('admin')")
 public class AdminController {
     private final RoleRepository roleRepository;
