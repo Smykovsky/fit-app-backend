@@ -93,13 +93,13 @@ public class UserService implements UserDetailsService {
     public Double calculateCaloriesMan(User user) {
         double caloriesGoal = 66 + (13.7 * user.getWeight()) + (5 * user.getHeight()) - (6 * user.getAge());
 
-        if (user.getGoal().equals("weight-loss")) {
+        if (user.getGoal().equals("Redukcja")) {
             caloriesGoal -= 300;
             System.out.println("wybieram redukcje");
-        } else if (user.getGoal().equals("muscle")) {
+        } else if (user.getGoal().equals("Masa mięśniowa")) {
             caloriesGoal += 300;
             System.out.println("wybieram mase");
-        } else if (user.getGoal().equals("weight-maintenance")) {
+        } else if (user.getGoal().equals("Utrzymanie wagi")) {
             caloriesGoal += 0;
         }
 
@@ -120,14 +120,14 @@ public class UserService implements UserDetailsService {
         return caloriesGoal;
     }
 
-    public Double calculateCaloriesWomen(User user) {
+    public Double calculateCaloriesWoman(User user) {
         double caloriesGoal = 655 + (9.6 * user.getWeight()) + (1.8 * user.getHeight()) - (4.7 * user.getAge());
 
         if (user.getGoal().equals("Redukcja")) {
             caloriesGoal -= 300;
         } else if (user.getGoal().equals("Masa mięśniowa")) {
             caloriesGoal += 300;
-        } else if (user.getGoal().equals("weight-maintenance")) {
+        } else if (user.getGoal().equals("Utrzymanie wagi")) {
             caloriesGoal += 0;
         }
 

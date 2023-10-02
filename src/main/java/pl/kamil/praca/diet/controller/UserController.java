@@ -27,7 +27,7 @@ public class UserController {
     public ResponseEntity<?> personalizeUser(@RequestBody @Valid PersonalizeRequest personalizeRequest, Authentication authentication) {
         Map<String, Object> responseMap = new HashMap<>();
         final String MAN = "Mężczyzna";
-        final String WOMEN = "Kobieta";
+        final String WOMAN = "Kobieta";
 
         if (authentication == null || !authentication.isAuthenticated()) {
             responseMap.put("message", "Użytkownik nie jest zautoryzowany!");
@@ -49,9 +49,10 @@ public class UserController {
 
         if (personalizeRequest.getGender().equals(MAN)) {
             user.setCalorieIntakeGoal(userService.calculateCaloriesMan(user));
-            userService.saveUser(user);
-        } else
-            user.setCalorieIntakeGoal(userService.calculateCaloriesWomen(user));
+        } else if (personalizeRequest.getGender().equals(WOMAN)) {
+            user.setCalorieIntakeGoal(userService.calculateCaloriesWoman(user));
+        }
+
         userService.saveUser(user);
 
         responseMap.put("user", user);
