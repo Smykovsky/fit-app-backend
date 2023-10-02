@@ -43,6 +43,8 @@ public class User {
     @Nullable
     private String goal;
     @Nullable
+    private String activity;
+    @Nullable
     private Double calorieIntakeGoal;
     @Nullable
     private Double caloriesEaten;

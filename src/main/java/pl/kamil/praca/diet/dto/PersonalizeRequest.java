@@ -13,4 +13,5 @@ public class PersonalizeRequest {
     private String gender;
     @Nullable
     private String goal;
+    private String activity;
 }

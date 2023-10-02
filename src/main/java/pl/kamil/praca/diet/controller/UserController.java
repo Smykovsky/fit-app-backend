@@ -43,6 +43,7 @@ public class UserController {
         user.setHeight(personalizeRequest.getHeight());
         user.setGender(personalizeRequest.getGender());
         user.setGoal(personalizeRequest.getGoal());
+        user.setActivity(personalizeRequest.getActivity());
 
         user.addUserProgress(new UserProgress(personalizeRequest.getWeight()));
 
@@ -54,7 +55,7 @@ public class UserController {
         userService.saveUser(user);
 
         responseMap.put("user", user);
-        responseMap.put("message", "Pomyślnie spersonalizowano użytkownika :)");
+        responseMap.put("message", "Pomyślnie spersonalizowano użytkownika.");
         return ResponseEntity.ok(responseMap);
     }
 

@@ -93,11 +93,55 @@ public class UserService implements UserDetailsService {
     public Double calculateCaloriesMan(User user) {
         double caloriesGoal = 66 + (13.7 * user.getWeight()) + (5 * user.getHeight()) - (6 * user.getAge());
 
-        if (user.getGoal().equals("Schudnąć")) {
-            return caloriesGoal - 300;
-        } else if (user.getGoal().equals("Zbudować masę")) {
-            return caloriesGoal + 300;
-        } else return caloriesGoal;
+        if (user.getGoal().equals("weight-loss")) {
+            caloriesGoal -= 300;
+            System.out.println("wybieram redukcje");
+        } else if (user.getGoal().equals("muscle")) {
+            caloriesGoal += 300;
+            System.out.println("wybieram mase");
+        } else if (user.getGoal().equals("weight-maintenance")) {
+            caloriesGoal += 0;
+        }
+
+        if (user.getActivity().equals("low")) {
+            caloriesGoal *= 1.2;
+            System.out.println("activity low");
+        } else if (user.getActivity().equals("medium")) {
+            caloriesGoal *= 1.375;
+            System.out.println("activity medium");
+        } else if (user.getActivity().equals("high")) {
+            caloriesGoal *= 1.55;
+            System.out.println("activity high");
+        } else if (user.getActivity().equals("very-high")) {
+            caloriesGoal *= 1.725;
+            System.out.println("acitvity very-high");
+        }
+
+        return caloriesGoal;
+    }
+
+    public Double calculateCaloriesWomen(User user) {
+        double caloriesGoal = 655 + (9.6 * user.getWeight()) + (1.8 * user.getHeight()) - (4.7 * user.getAge());
+
+        if (user.getGoal().equals("Redukcja")) {
+            caloriesGoal -= 300;
+        } else if (user.getGoal().equals("Masa mięśniowa")) {
+            caloriesGoal += 300;
+        } else if (user.getGoal().equals("weight-maintenance")) {
+            caloriesGoal += 0;
+        }
+
+        if (user.getActivity().equals("low")) {
+            caloriesGoal *= 1.2;
+        } else if (user.getActivity().equals("medium")) {
+            caloriesGoal *= 1.375;
+        } else if (user.getActivity().equals("high")) {
+            caloriesGoal *= 1.55;
+        } else if (user.getActivity().equals("very-high")) {
+            caloriesGoal *= 1.725;
+        }
+
+        return caloriesGoal;
     }
 
     public String randomPasswordGenerator() {
@@ -121,16 +165,6 @@ public class UserService implements UserDetailsService {
         message.setText("Hasło zostało zmienione! Nowe hasło to: " + newPassword);
         message.setSubject("New password");
         javaMailSender.send(message);
-    }
-
-    public Double calculateCaloriesWomen(User user) {
-        double caloriesGoal = 655 + (9.6 * user.getWeight()) + (1.8 * user.getHeight()) - (4.7 * user.getAge());
-
-        if (user.getGoal().equals("Redukcja")) {
-            return caloriesGoal - 300;
-        } else if (user.getGoal().equals("Masa mięśniowa")) {
-            return caloriesGoal + 300;
-        } else return caloriesGoal;
     }
 
     public Double getCaloriesFromUser(Authentication authentication) {
