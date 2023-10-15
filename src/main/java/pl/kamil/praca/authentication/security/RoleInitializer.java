@@ -43,6 +43,18 @@ public class RoleInitializer implements CommandLineRunner {
             return;
         }
 
+        if (userService.getUser("mod") == null) {
+            User mod = new User();
+            mod.setUsername("mod");
+            mod.setPassword(passwordEncoder.encode("mod"));
+            mod.setEmail("mod@mod.pl");
+            Role roleForMod = roleRepository.findByName("mod");
+            mod.addRole(roleForMod);
+            userService.saveUser(mod);
+        } else {
+            return;
+        }
+
 
     }
 }
