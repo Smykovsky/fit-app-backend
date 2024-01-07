@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Setter
 @Builder
 @Data
-@Table(name = "users")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

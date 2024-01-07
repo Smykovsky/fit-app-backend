@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Data
-@Table(name = "food_items")
+@Table(name = "food_item")
 public class FoodItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

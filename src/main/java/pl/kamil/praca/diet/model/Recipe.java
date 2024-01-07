@@ -8,7 +8,7 @@ import lombok.Setter;
 import pl.kamil.praca.diet.dto.RecipeRequest;
 
 @Entity
-@Table(name = "recipes")
+@Table(name = "recipe")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 public class Recipe {
