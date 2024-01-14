@@ -153,13 +153,6 @@ public class User {
                 .reduce(0.0, Double::sum);
     }
 
-//    public Double getEatenCalories() {
-//        return meals.stream()
-//                .map(Meal::getFoodItems)
-//                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getCreatedAt().isEqual(LocalDate.now())).map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
-//                .reduce(0.0, Double::sum);
-//    }
-
     public Double getEatenProteins() {
         return meals.stream()
                 .filter(meal -> meal.getCreatedAt().equals(LocalDate.now()))
