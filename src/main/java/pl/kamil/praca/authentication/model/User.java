@@ -2,6 +2,7 @@ package pl.kamil.praca.authentication.model;
 
 import javax.persistence.*;
 import lombok.*;
+import org.apache.tomcat.jni.Local;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -144,29 +145,48 @@ public class User {
 
     public Double getEatenCalories() {
         return meals.stream()
-                .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getCreatedAt().isEqual(LocalDate.now())).map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
+                .filter(meal -> meal.getCreatedAt().equals(LocalDate.now()))
+                .map(Meal::getFoodItems).map(foodItems -> foodItems.stream()
+                        .filter(foodItem -> foodItem.getCreatedAt().equals(LocalDate.now()))
+                        .map(FoodItem::getCalories)
+                        .reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
 
+//    public Double getEatenCalories() {
+//        return meals.stream()
+//                .map(Meal::getFoodItems)
+//                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getCreatedAt().isEqual(LocalDate.now())).map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
+//                .reduce(0.0, Double::sum);
+//    }
+
     public Double getEatenProteins() {
         return meals.stream()
-                .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getCreatedAt().isEqual(LocalDate.now())).map(foodItem -> foodItem.getProtein()).reduce(0.0, Double::sum))
+                .filter(meal -> meal.getCreatedAt().equals(LocalDate.now()))
+                .map(Meal::getFoodItems).map(foodItems -> foodItems.stream()
+                        .filter(foodItem -> foodItem.getCreatedAt().equals(LocalDate.now()))
+                        .map(FoodItem::getProtein)
+                        .reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
 
     public Double getEatenCarbohydrates() {
         return meals.stream()
-                .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getCreatedAt().isEqual(LocalDate.now())).map(foodItem -> foodItem.getCarbohydrates()).reduce(0.0, Double::sum))
+                .filter(meal -> meal.getCreatedAt().equals(LocalDate.now()))
+                .map(Meal::getFoodItems).map(foodItems -> foodItems.stream()
+                        .filter(foodItem -> foodItem.getCreatedAt().equals(LocalDate.now()))
+                        .map(FoodItem::getCarbohydrates)
+                        .reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
 
     public Double getEatenFats() {
         return meals.stream()
-                .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().filter(foodItem -> foodItem.getCreatedAt().isEqual(LocalDate.now())).map(foodItem -> foodItem.getFat()).reduce(0.0, Double::sum))
+                .filter(meal -> meal.getCreatedAt().equals(LocalDate.now()))
+                .map(Meal::getFoodItems).map(foodItems -> foodItems.stream()
+                        .filter(foodItem -> foodItem.getCreatedAt().equals(LocalDate.now()))
+                        .map(FoodItem::getFat)
+                        .reduce(0.0, Double::sum))
                 .reduce(0.0, Double::sum);
     }
 
