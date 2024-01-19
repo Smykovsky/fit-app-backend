@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface MealRepository extends JpaRepository<Meal, Long> {
-    List<Meal> findByCreatedAt(LocalDate date);
+
 }

@@ -6,14 +6,13 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
-
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Data
 @Table(name = "meal")
+@Entity
+@Getter
+@Setter
 public class Meal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +23,7 @@ public class Meal {
     @Column(name = "updated_at")
     private LocalDate updatedAt;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<FoodItem> foodItems; //meals items
+    private List<FoodItem> foodItems;
 
     public Meal(String name) {
         this.name = name;
