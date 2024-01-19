@@ -3,6 +3,7 @@ package pl.kamil.praca.authentication.service;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
@@ -26,16 +27,13 @@ import java.util.Optional;
 @Service
 @Transactional
 @Slf4j
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final JavaMailSender javaMailSender;
-
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, JavaMailSender javaMailSender) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.javaMailSender = javaMailSender;
-    }
+    @Value("${spring.mail.username}")
+    private String serviceEmail;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -160,7 +158,7 @@ public class UserService implements UserDetailsService {
 
     public void sendEmail(String email, String newPassword) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("ksmyk.dev2000@gmail.com");
+        message.setFrom(serviceEmail);
         message.setTo(email);
         message.setText("Hasło zostało zmienione! Nowe hasło to: " + newPassword);
         message.setSubject("New password");
