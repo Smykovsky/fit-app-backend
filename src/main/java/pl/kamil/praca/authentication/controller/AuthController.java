@@ -55,6 +55,7 @@ public class AuthController{
         } else {
             User user = new User();
             user.setEmail(registerRequest.getEmail());
+            user.setBlocked(false);
             user.setUsername(registerRequest.getUsername());
             user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             Role role = userService.findRoleByName("user");
@@ -73,6 +74,11 @@ public class AuthController{
         if (user == null) {
             responseMap.put("message", "Brak takiego użytkownika");
             return ResponseEntity.status(401).body(responseMap);
+        }
+
+        if (user.isBlocked()) {
+          responseMap.put("message", "Konto zostało zablokowane!");
+          return ResponseEntity.status(403).body(responseMap);
         }
         try {
             Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));

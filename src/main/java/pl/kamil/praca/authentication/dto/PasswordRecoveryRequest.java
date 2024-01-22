@@ -1,8 +1,8 @@
 package pl.kamil.praca.authentication.dto;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class PasswordRecoveryRequest {
     private String username;
     private String email;

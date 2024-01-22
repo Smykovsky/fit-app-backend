@@ -84,4 +84,35 @@ public class AdminController {
         userService.sendEmail(user.getEmail(), newPassword);
         return ResponseEntity.noContent().build();
     }
+
+  @PostMapping("/{username}/block")
+  public ResponseEntity<?> blockUser(Authentication authentication, @PathVariable String username) {
+    if (authentication == null || !authentication.isAuthenticated()) {
+      return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+    }
+
+    User userToBlock = userService.getUser(username);
+    if (userToBlock != null) {
+      userToBlock.setBlocked(true);
+      System.out.println(userToBlock.isBlocked());
+    }
+
+    userService.saveUser(userToBlock);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/{username}/unBlock")
+  public ResponseEntity<?> unBlockUser(Authentication authentication, @PathVariable String username) {
+    if (authentication == null || !authentication.isAuthenticated()) {
+      return ResponseEntity.status(403).body("Użytkownik nie jest zautoryzowany!");
+    }
+    User userToUnBlock = userService.getUser(username);
+    if (userToUnBlock != null) {
+      userToUnBlock.setBlocked(false);
+      System.out.println(userToUnBlock.isBlocked());
+    }
+
+    userService.saveUser(userToUnBlock);
+    return ResponseEntity.noContent().build();
+  }
 }

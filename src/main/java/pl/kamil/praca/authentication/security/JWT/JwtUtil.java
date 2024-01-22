@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtil {
     private static final String SECRET = "gmasd4Df1dFCgD8sVuferYvE21vmgDaxdgD";
-    private static final int EXPIRED = 60;
+    private static final int EXPIRED = 30;
 
     public String buildJwt(UserDetails user) {
         Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes());
 
         return JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRED* 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRED* 30 * 1000))
                 .withIssuer(new Date(System.currentTimeMillis()).toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);

@@ -8,8 +8,6 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class RegisterRequest {
     @NotBlank(message = "Wprowadź swój email!")
     private String email;

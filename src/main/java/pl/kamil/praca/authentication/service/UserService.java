@@ -164,18 +164,4 @@ public class UserService implements UserDetailsService {
         message.setSubject("New password");
         javaMailSender.send(message);
     }
-
-    public Double getCaloriesFromUser(Authentication authentication) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return null;
-        }
-        User user = getUser(authentication.getName());
-        List<Meal> meals = user.getMeals();
-        double calories = meals.stream()
-                .map(Meal::getFoodItems)
-                .map(foodItems -> foodItems.stream().map(foodItem -> foodItem.getCalories()).reduce(0.0, Double::sum))
-                .reduce(0.0, Double::sum);
-
-        return calories;
-    }
 }
