@@ -55,8 +55,8 @@ public class UserController {
 
         userService.saveUser(user);
 
-        responseMap.put("user", user);
         responseMap.put("message", "Pomyślnie spersonalizowano użytkownika.");
+        responseMap.put("required_calories", user.getCalorieIntakeGoal());
         return ResponseEntity.ok(responseMap);
     }
 

@@ -24,6 +24,7 @@ import pl.kamil.praca.authentication.repository.TokenRepository;
 import pl.kamil.praca.authentication.security.JWT.JwtUtil;
 import pl.kamil.praca.authentication.service.RefreshTokenService;
 import pl.kamil.praca.authentication.service.UserService;
+import pl.kamil.praca.authentication.view.UserViewModel;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -61,8 +62,7 @@ public class AuthController{
             Role role = userService.findRoleByName("user");
             user.addRole(role);
             userService.saveUser(user);
-            responseMap.put("username", registerRequest.getUsername());
-            responseMap.put("message", "Konto zostało pomyślnie zalożone");
+            responseMap.put("message", "Konto: " + registerRequest.getUsername() +" zostało pomyślnie zalożone");
             return ResponseEntity.ok(responseMap);
         }
     }
@@ -85,13 +85,13 @@ public class AuthController{
             if (auth.isAuthenticated()) {
                 UserDetails userDetails = userService.getUserDetails(user);
                 if (userDetails == null) {
-                    responseMap.put("message", "Brak takiego użytkownika");
+                    responseMap.put("message", "Brak takiego użytkownika w systemie!");
                     return ResponseEntity.status(401).body(responseMap);
                 }
                 String token = jwtUtil.buildJwt(userDetails);
                 tokenRepository.save(new Token(null, token, user.getUsername()));
                 final RefreshToken refreshToken = this.refreshTokenService.createRefreshToken(user.getUsername());
-                responseMap.put("message", "Zalogowano");
+                responseMap.put("message", "Pomyślnie zalogowano użytkownika: " + loginRequest.getUsername());
                 responseMap.put("access_token", token);
                 responseMap.put("refresh_token", refreshToken.getToken());
                 return ResponseEntity.ok(responseMap);
@@ -121,8 +121,10 @@ public class AuthController{
             return ResponseEntity.notFound().build();
         }
 
+      UserViewModel userViewModel = new UserViewModel(user);
+
         Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("user", user);
+        responseMap.put("user", userViewModel);
         return ResponseEntity.ok().body(responseMap);
     }
 
